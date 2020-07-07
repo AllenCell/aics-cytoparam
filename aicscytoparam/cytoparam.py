@@ -2,7 +2,7 @@ import os
 import vtk
 import numpy as np
 from aicsshparam import shparam, shtools
-from vtk.util.numpy_support import vtk_to_numpy
+from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 from skimage import segmentation as skseg
 from skimage import morphology as skmorpho
@@ -147,7 +147,7 @@ def prob_image(polydata, images_to_probe):
 
     return polydata
 
-def get_geodesic_meshes(geodists, lmax=32, alignment_mode=None, images_to_probe=None):
+def get_geodesic_meshes(geodists, lmax=32, images_to_probe=None):
 
     '''
     Convert image with geodesic distances into isosurfaces
@@ -157,14 +157,65 @@ def get_geodesic_meshes(geodists, lmax=32, alignment_mode=None, images_to_probe=
 
     meshes = []
     for iso in iso_values:
-        (coeffs, grid_rec), (image_, mesh, centroid, grid) = shparam.get_shcoeffs(
+
+        (coeffs, grid_rec), (image_, mesh, grid, transform) = shparam.get_shcoeffs(
             image = (geodists<=iso).astype(np.uint8),
             lmax = lmax,
-            alignment_mode = alignment_mode)
+            alignment_2d = False)
+
+        centroid = (transform[0], transform[1], transform[2])
+
         mesh_rec = shtools.get_reconstruction_from_grid(grid_rec, centroid=centroid)
+
         if images_to_probe is not None:
             mesh_rec = prob_image(mesh_rec,images_to_probe)
+        
         meshes.append(mesh_rec)
+
+    return meshes
+
+def get_equipotential_surfaces_from_sh_coeffs(mem_coeffs, nuc_coeffs, nisos=[32,32], centroids=None, images_to_probe=None):
+
+    '''
+    Parametrize nuclear and cell surfaces using spherical harmonics and
+    interpolate the sh coefficients to morph the surfaces.
+    '''
+
+    nc = len(mem_coeffs)
+    lmax = int(np.sqrt(nc/2.)-1)
+
+    if nc != len(nuc_coeffs):
+        raise ValueError(f"Number of coefficients in mem_coeffs and nuc_coeffs are different: {nc,len(nuc_coeffs)}")
+
+    ctr_coeffs = np.array([0 if i else 1 for i in range(nc)])
+    nuc_coeffs = np.array([v for v in nuc_coeffs.values()])
+    mem_coeffs = np.array([v for v in mem_coeffs.values()])
+
+    coeffs = np.c_[ctr_coeffs, nuc_coeffs, mem_coeffs]
+
+    iso_values = [0.0] + nisos
+    iso_values = np.cumsum(iso_values)
+    iso_values = iso_values / iso_values[-1]
+
+    coeffs_interpolator = spinterp.interp1d(iso_values, coeffs)
+
+    if centroids is not None:
+        centroids_interpolator = spinterp.interp1d(iso_values, centroids)
+
+    meshes = []
+    for i, s in enumerate(np.linspace(0.0,1.0,1+np.sum(nisos))):
+
+        coeffs = coeffs_interpolator(s).reshape(2,lmax+1,lmax+1)
+        mesh, _ = shtools.get_reconstruction_from_coeffs(coeffs)
+
+        if centroids is not None:
+            centroid = centroids_interpolator(s).reshape(1,3)
+            mesh = translate_mesh(mesh,centroid)
+
+        if images_to_probe is not None:
+            mesh = prob_image(mesh, images_to_probe)
+
+        meshes.append(mesh)
 
     return meshes
 
@@ -188,7 +239,7 @@ def interpolate_this_trace(trace, npts):
     trace_interp = ftrace(np.linspace(0,1,npts)).T
     return trace_interp, total_length
 
-def get_traces(meshes, trace_pts=64, images_to_probe=None):
+def get_traces_(meshes, trace_pts=64, images_to_probe=None):
 
     pts = vtk.vtkPoints()
     cellarray = vtk.vtkCellArray()
@@ -223,6 +274,52 @@ def get_traces(meshes, trace_pts=64, images_to_probe=None):
 
     if images_to_probe is not None:
         polydata = prob_image(polydata,images_to_probe)
+
+    return polydata
+
+def get_traces(meshes, images_to_probe=None):
+
+    pts = vtk.vtkPoints()
+    cellarray = vtk.vtkCellArray()
+
+    npts = meshes[0].GetNumberOfPoints()
+
+    scalars_isoval = vtk.vtkFloatArray()
+    scalars_isoval.SetNumberOfComponents(1)
+    scalars_isoval.SetName('isoval')
+
+    scalars_length = vtk.vtkFloatArray()
+    scalars_length.SetNumberOfComponents(1)
+    scalars_length.SetName('length')
+
+    for i in range(npts):
+        
+        trace = []
+        for mesh in meshes:
+            r = mesh.GetPoint(i)
+            trace.append(r) 
+        trace = np.array(trace)
+                
+        cellarray.InsertNextCell(len(trace))
+        
+        dr = 0.0
+        ro = [0,0,0]
+        for iso, r in enumerate(trace):
+            pid = pts.InsertNextPoint(r)
+            cellarray.InsertCellPoint(pid)
+            scalars_isoval.InsertNextTuple1(iso)
+            dr += np.sqrt(((np.array(ro)-np.array(r))**2).sum())
+            scalars_length.InsertNextTuple1(dr)
+            ro = r
+                
+    polydata = vtk.vtkPolyData()
+    polydata.SetPoints(pts)
+    polydata.SetLines(cellarray)
+    polydata.GetPointData().AddArray(scalars_isoval)
+    polydata.GetPointData().AddArray(scalars_length)
+
+    if images_to_probe is not None:
+        polydata = prob_image(polydata, images_to_probe)
 
     return polydata
 
@@ -288,23 +385,120 @@ def voxelize_meshes(meshes):
 
         img += seg
 
-    return img
+    origin = rmin
+    origin = origin.reshape(1,3)
 
-def parametrize(seg_mem, seg_dna, images_to_probe=None):
+    return img, origin
 
-    geodesics = get_geodesics(seg_mem=seg_mem, seg_dna=seg_mem)
+def parametrize(seg_mem, seg_nuc, lmax=32, sigma=1, nisos=[32,32], images_to_probe=None):
 
-    meshes = get_geodesic_meshes(
-        geodists = geodesics,
-        images_to_probe = images_to_probe
-    )
+    '''
+    Assumes the input images have already been aligned.
+    '''
+
+    (mem_coeffs, _), (_, _, _, mem_centroid)= shparam.get_shcoeffs(
+        image = seg_mem,
+        lmax = 32,
+        sigma = 1,
+        compute_lcc = True,
+        alignment_2d = False)
+
+    (nuc_coeffs, _), (_, _, _, nuc_centroid)= shparam.get_shcoeffs(
+        image = seg_nuc,
+        lmax = 32,
+        sigma = 1,
+        compute_lcc = True,
+        alignment_2d = False)
+
+    centroids = np.c_[nuc_centroid,nuc_centroid,mem_centroid]
+
+    meshes = get_equipotential_surfaces_from_sh_coeffs(
+        mem_coeffs = mem_coeffs,
+        nuc_coeffs = nuc_coeffs,
+        nisos = nisos,
+        centroids = centroids,
+        images_to_probe = images_to_probe)
 
     traces = get_traces(
         meshes = meshes,
-        images_to_probe = images_to_probe
-    )
+        images_to_probe = images_to_probe)
 
     return meshes, traces
+
+def copy_content(sources, destination, arrays, normalize=False):
+
+    npts = destination.GetNumberOfPoints()
+
+    data = []
+    for array in arrays:
+        data.append(np.zeros((npts), dtype=np.float32))
+
+    for source in sources:
+
+        if os.path.exists(source):
+
+            reader = vtk.vtkPolyDataReader()
+            reader.SetFileName(source)
+            reader.Update()
+
+            mesh = reader.GetOutput()
+
+            available_arrays = []
+            for arr in range(mesh.GetPointData().GetNumberOfArrays()):
+                available_arrays.append(mesh.GetPointData().GetArrayName(arr))
+                
+            for arr, array in enumerate(arrays):
+
+                if array not in available_arrays:
+                    raise ValueError(f"Array {array} not found. Arrays available {available_arrays}")
+
+                scalars = mesh.GetPointData().GetArray(array)
+
+                scalars = vtk_to_numpy(scalars)
+
+                if scalars.shape != data[arr].shape:
+                    raise ValueError(f"Shape mismatch. Scalars shape: {scalars.shape}. Expected: {data[arr].shape}")
+
+                # Normalize scalars to [0,1]
+                smax = scalars.max()
+                if normalize & (smax > 0.):
+                    scalars /= smax
+                data[arr] += scalars
+
+    '''
+
+        >>> I want create a matrix of sources x npts and average after the loop according to the data type.
+        
+    '''
+
+    for array, name in zip(data,arrays):
+
+        # Turn array into probabilities
+        array /= len(sources)
+
+        new_array = vtk.vtkFloatArray()
+        new_array.SetName(f'{name}_avg')
+        new_array.SetNumberOfComponents(1)
+        new_array.SetNumberOfTuples(npts)
+        for i in range(npts):
+            new_array.SetTuple1(i,array[i])
+
+        destination.GetPointData().AddArray(new_array)
+
+    return destination
+
+def translate_mesh(polydata, dr):
+
+    if dr.shape != (1,3):
+        raise ValueError(f"Shape mismatch. dr has shape: {dr.shape}. Expected: (1,3) for 3D displacement vector.")
+
+    coords = vtk_to_numpy(polydata.GetPoints().GetData())
+
+    coords += dr
+
+    polydata.GetPoints().SetData(numpy_to_vtk(coords))
+
+    return polydata
 
 if __name__ == "__main__":
 

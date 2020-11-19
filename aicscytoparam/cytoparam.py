@@ -1,9 +1,10 @@
 import os
 import vtk
+import tqdm
 import numpy as np
 from aicsshparam import shparam, shtools
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
-
+from scipy import ndimage as spimg
 from skimage import segmentation as skseg
 from skimage import morphology as skmorpho
 from scipy import interpolate as spinterp
@@ -12,12 +13,12 @@ from scipy.ndimage import morphology as scimorph
 def get_croppped_version(mem, dna):
 
     z, y, x = np.where(mem)
-    xmin = x.min()
-    xmax = x.max()
-    ymin = y.min()
-    ymax = y.max()
-    zmin = z.min()
-    zmax = z.max()
+    xmin = x.min()-1
+    xmax = x.max()+2
+    ymin = y.min()-1
+    ymax = y.max()+2
+    zmin = z.min()-1
+    zmax = z.max()+2
 
     mem = mem[zmin:zmax,ymin:ymax,xmin:xmax]
     dna = dna[zmin:zmax,ymin:ymax,xmin:xmax]
@@ -28,11 +29,6 @@ def heat_eq_step(omega):
 
     '''
         Executes a single step of the heat equation
-
-        ALTERNATIVE:
-
-        idx,idy,idz = np.unravel_index(id_1d,(3,3,3))
-        np.ravel_multi_index((idx,idy,idz),(3,3,3))
 
     '''
 
@@ -47,7 +43,7 @@ def heat_eq_step(omega):
         
     return omega
 
-def get_geodesics(seg_mem, seg_dna, nisos=8):
+def get_geodesics(seg_mem, seg_nuc, nisos=8):
 
     '''
     Calculates an approximation for geodesic distances within the cell
@@ -56,10 +52,10 @@ def get_geodesics(seg_mem, seg_dna, nisos=8):
 
     geodesics = np.zeros_like(seg_mem)
 
-    seg_mem, seg_dna, roi = get_croppped_version(seg_mem, seg_dna)
+    seg_mem, seg_nuc, roi = get_croppped_version(seg_mem, seg_nuc)
 
     # Create masks (1 = cytoplasm, 2 = nucleus)
-    mask = (seg_mem>0).astype(np.uint8) + (seg_dna>0).astype(np.uint8)
+    mask = (seg_mem>0).astype(np.uint8) + (seg_nuc>0).astype(np.uint8)
 
     # Calculates dmax
     edtm = scimorph.distance_transform_edt(mask>0)
@@ -71,11 +67,11 @@ def get_geodesics(seg_mem, seg_dna, nisos=8):
     tmax = np.exp(2)
 
     # Create domain
-    omega = tmid*np.ones(mask.shape, dtype=np.float64)
+    omega = tmid*np.ones(mask.shape, dtype=np.float32)
 
     # Find boundaries pixels
-    warms = skseg.find_boundaries(mask>0, connectivity=1, mode='thick')
-    colds = skseg.find_boundaries(mask>1, connectivity=1, mode='thick')
+    warms = skseg.find_boundaries(mask>0, connectivity=1, mode='inner')
+    colds = skseg.find_boundaries(mask>1, connectivity=1, mode='inner')
     freez = np.zeros_like(colds)
     z, y, x = np.where(mask==2)
     freez[int(z.mean()),int(y.mean()),int(x.mean())] = True
@@ -94,7 +90,7 @@ def get_geodesics(seg_mem, seg_dna, nisos=8):
     for run in range(50*dmax):
         
         omega = heat_eq_step(omega)
-                            
+                           
         omega[freez] = tmin
         omega[colds] = tmid
         omega[warms] = tmax
@@ -396,17 +392,17 @@ def parametrize(seg_mem, seg_nuc, lmax=32, sigma=1, nisos=[32,32], images_to_pro
     Assumes the input images have already been aligned.
     '''
 
-    (mem_coeffs, _), (_, _, _, mem_centroid)= shparam.get_shcoeffs(
+    (mem_coeffs, grid), (_, _, _, mem_centroid)= shparam.get_shcoeffs(
         image = seg_mem,
-        lmax = 32,
-        sigma = 1,
+        lmax = lmax,
+        sigma = sigma,
         compute_lcc = True,
         alignment_2d = False)
 
-    (nuc_coeffs, _), (_, _, _, nuc_centroid)= shparam.get_shcoeffs(
+    (nuc_coeffs, grid), (_, _, _, nuc_centroid)= shparam.get_shcoeffs(
         image = seg_nuc,
-        lmax = 32,
-        sigma = 1,
+        lmax = lmax,
+        sigma = sigma,
         compute_lcc = True,
         alignment_2d = False)
 
@@ -427,13 +423,11 @@ def parametrize(seg_mem, seg_nuc, lmax=32, sigma=1, nisos=[32,32], images_to_pro
 
 def copy_content(sources, destination, arrays, normalize=False):
 
-    npts = destination.GetNumberOfPoints()
-
-    data = []
+    data = {}
     for array in arrays:
-        data.append(np.zeros((npts), dtype=np.float32))
+        data[array] = []
 
-    for source in sources:
+    for source in tqdm.tqdm(sources):
 
         if os.path.exists(source):
 
@@ -446,44 +440,40 @@ def copy_content(sources, destination, arrays, normalize=False):
             available_arrays = []
             for arr in range(mesh.GetPointData().GetNumberOfArrays()):
                 available_arrays.append(mesh.GetPointData().GetArrayName(arr))
-                
+
             for arr, array in enumerate(arrays):
 
-                if array not in available_arrays:
-                    raise ValueError(f"Array {array} not found. Arrays available {available_arrays}")
+                if array in available_arrays:
 
-                scalars = mesh.GetPointData().GetArray(array)
+                    scalars = mesh.GetPointData().GetArray(array)
 
-                scalars = vtk_to_numpy(scalars)
+                    scalars = vtk_to_numpy(scalars)
 
-                if scalars.shape != data[arr].shape:
-                    raise ValueError(f"Shape mismatch. Scalars shape: {scalars.shape}. Expected: {data[arr].shape}")
+                    data[array].append(scalars)
 
-                # Normalize scalars to [0,1]
-                smax = scalars.max()
-                if normalize & (smax > 0.):
-                    scalars /= smax
-                data[arr] += scalars
+                else:
 
-    '''
+                    print(f"WARNING: Array {array} not found. Arrays available {available_arrays}. Source: {source}")
 
-        >>> I want create a matrix of sources x npts and average after the loop according to the data type.
-        
-    '''
+    npts = destination.GetNumberOfPoints()
 
-    for array, name in zip(data,arrays):
+    for array in arrays:
 
-        # Turn array into probabilities
-        array /= len(sources)
+        for op, suffix in zip([np.mean,np.std],['avg','std']):
 
-        new_array = vtk.vtkFloatArray()
-        new_array.SetName(f'{name}_avg')
-        new_array.SetNumberOfComponents(1)
-        new_array.SetNumberOfTuples(npts)
-        for i in range(npts):
-            new_array.SetTuple1(i,array[i])
+            if len(data[array]) > 0:
+                data_op = op(np.array(data[array]), axis=0)
+            else:
+                # If no signal found
+                data_op = np.zeros(npts)
 
-        destination.GetPointData().AddArray(new_array)
+            new_array = vtk.vtkFloatArray()
+            new_array.SetName(f'{array}_{suffix}')
+            new_array.SetNumberOfComponents(1)
+            new_array.SetNumberOfTuples(npts)
+            for i in range(npts):
+                new_array.SetTuple1(i, data_op[i])
+            destination.GetPointData().AddArray(new_array)
 
     return destination
 
@@ -499,6 +489,63 @@ def translate_mesh(polydata, dr):
     polydata.GetPoints().SetData(numpy_to_vtk(coords))
 
     return polydata
+
+def evaluate_reconstruction(seg_nuc, seg_mem, image_to_probe, array_name):
+
+    # Run parameterization
+    meshes, traces = parametrize(
+        seg_mem = seg_mem,
+        seg_nuc = seg_nuc,
+        images_to_probe = [(image_to_probe,array_name)]
+    )
+
+    # Create projections (top view is right above the nucleus)
+    z, y, _ = np.where(seg_nuc)
+    zs = 1+int(z.max())
+    ys = int(y.mean())
+    image_to_probe[seg_mem==0] = 0
+
+    projs = np.array([
+        np.vstack([seg_mem[zs], seg_mem[:,ys][::-1]]),
+        np.vstack([seg_nuc[zs], seg_nuc[:,ys][::-1]]),
+        np.vstack([image_to_probe[zs], image_to_probe[:,ys][::-1]]),
+        np.vstack([seg_mem.max(axis=0), seg_mem.max(axis=1)[::-1]]),
+        np.vstack([seg_nuc.max(axis=0), seg_nuc.max(axis=1)[::-1]]),
+        np.vstack([image_to_probe.max(axis=0), image_to_probe.max(axis=1)[::-1]]),
+    ])
+
+    # Voxelize result
+    trc_coords = vtk_to_numpy(traces.GetPoints().GetData())
+    trc_scalar = vtk_to_numpy(traces.GetPointData().GetArray(array_name))
+    field = np.zeros(seg_mem.shape, dtype=np.float32)
+    field[trc_coords[:,2].astype(np.int),trc_coords[:,1].astype(np.int),trc_coords[:,0].astype(np.int)] = trc_scalar
+    field[seg_mem==0] = 0
+
+    # Fit
+    nninterpolator = spinterp.NearestNDInterpolator(trc_coords[:,[2,1,0]], trc_scalar)
+
+    # Interpolate
+    cytopts = np.where(seg_mem)
+    field_interp = field.copy()
+    field_interp[cytopts] = nninterpolator(cytopts)
+
+    # Projection of reconstructions
+    projs_rec = np.array([
+        np.vstack([seg_mem[zs], seg_mem[:,ys][::-1]]),
+        np.vstack([seg_nuc[zs], seg_nuc[:,ys][::-1]]),
+        np.vstack([field[zs], field[:,ys][::-1]]),
+        np.vstack([field_interp[zs], field_interp[:,ys][::-1]]),
+        np.vstack([seg_mem.max(axis=0), seg_mem.max(axis=1)[::-1]]),
+        np.vstack([seg_nuc.max(axis=0), seg_nuc.max(axis=1)[::-1]]),
+        np.vstack([field.max(axis=0), field.max(axis=1)[::-1]]),
+        np.vstack([field_interp.max(axis=0), field_interp.max(axis=1)[::-1]]),
+    ])
+
+    # Pearson correlation between original and reconstruction
+    valids = np.where(seg_mem)
+    pcorr = np.corrcoef(image_to_probe[valids], field_interp[valids])[0,1]
+
+    return meshes, traces, (projs, projs_rec), pcorr
 
 if __name__ == "__main__":
 

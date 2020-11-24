@@ -1,16 +1,31 @@
 # Cytoplasm parameterization
 
-Description of the project and the module aicscytoparam. 
-Note that this will be used as a project description for your code/application/library. Replace this with
-the corresponding documentation.
+Spherical harmonics expansion coefficients-based parameterization of the cytoplasm and nucleoplasm for 3D cells
 
-## How to Build
+## Installation:
 
-The default project layout and build steps are discussed in [BUILD.md](BUILD.md). Some of the information
-is related to the AICS build process.
+**Stable Release**: coming to pypi soon
 
-## Legal documents
+**Build from source to make customization**: 
 
-- [License](LICENSE.txt) _(Before you release the project publicly please check with your manager to ensure the license is appropriate and has been run through legal review as necessary.)_
-- [Contribution Agreement](CONTRIBUTING.md) _(Additionally update the contribution agreement to reflect
-the level of contribution you are expecting, and the level of support you intend to provide.)_
+```console
+git clone git@github.com:AllenCell/aics-cytoparam.git
+cd aics-cytoparam
+pip install -e .
+```
+
+## Documentation:
+
+TBA
+
+
+## Development
+See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
+
+
+## Questions?
+
+If you have any questions, feel free to leave a comment in our Allen Cell forum: [https://forum.allencell.org/](https://forum.allencell.org/). 
+
+
+***Free software: Allen Institute Software License***

@@ -98,10 +98,7 @@ setup(cmdclass={'bdist_wheel': BDistWheelBranch},
           ]
       },
       install_requires=[
-          # List of modules required to use/run this module.
-          # -- E.g.
-          # 'numpy>=1.15.1',
-          # 'requests'
+            'aicsshparam>=0.0.13',
       ],
 
       # For test setup. This will allow JUnit XML output for Jenkins

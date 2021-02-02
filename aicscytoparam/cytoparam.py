@@ -198,9 +198,9 @@ def get_intensity_representation(polydata, images_to_probe):
     for name, img in images_to_probe:
         # Bound the values of x, y and z coordinates to fit inside the
         # probe image
-        x_clip = np.clip(x, 0, img.shape[2])
-        y_clip = np.clip(y, 0, img.shape[1])
-        z_clip = np.clip(z, 0, img.shape[0])
+        x_clip = np.clip(x, 0, img.shape[2]-1)
+        y_clip = np.clip(y, 0, img.shape[1]-1)
+        z_clip = np.clip(z, 0, img.shape[0]-1)
         representation[name] = img[z_clip, y_clip, x_clip]
                 
     return representation

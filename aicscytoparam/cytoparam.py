@@ -2,6 +2,7 @@ import os
 import vtk
 import tqdm
 import numpy as np
+from aicsimageio import AICSImage
 from aicsshparam import shparam, shtools
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 from scipy import ndimage as spimg
@@ -38,25 +39,24 @@ def parameterization_from_shcoeffs(coeffs_mem, centroid_mem, coeffs_nuc, centroi
         
     Returns
     -------
-    result: int
-        Number of boundary faces.
+    result: AICSImage
+        Multidimensional image of shape 11C1YX, where Y is the number of
+        interpolation levels and X is the number of points in the
+        representation. C corresponds to the number of probed images.
     """
         
-    meshes = interpolate_shcoeffs(
+    representations = run_cellular_mapping(
         coeffs_mem = coeffs_mem,
         centroid_mem = centroid_mem,
         coeffs_nuc = coeffs_nuc,
         centroid_nuc = centroid_nuc,
         nisos = nisos,
-        images_to_probe = images_to_probe)
+        images_to_probe = images_to_probe
+    )
+    
+    return representations
 
-    traces = get_traces(
-        meshes = meshes,
-        images_to_probe = images_to_probe)
-
-    return meshes, traces
-
-def interpolate_shcoeffs(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos, images_to_probe=None):
+def run_cellular_mapping(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos, images_to_probe=None):
 
     """
     Interpolate spherical harmonics coefficients representing the nuclear centroid,
@@ -86,8 +86,10 @@ def interpolate_shcoeffs(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nis
         
     Returns
     -------
-    result: int
-        Number of boundary faces.
+    result: AICSImage
+        Multidimensional image of shape 11C1YX, where Y is the number of
+        interpolation levels and X is the number of points in the
+        representation. C corresponds to the number of probed images.    
     """
     
     # Total number of coefficients
@@ -126,54 +128,82 @@ def interpolate_shcoeffs(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nis
     # Centroid interpolator
     centroids_interpolator = spinterp.interp1d(iso_values, centroids)
 
-    meshes = []
+    representations = []
     for i, iso_value in enumerate(np.linspace(0.0,1.0,1+np.sum(nisos))):
-
+        
         # Get coeffs at given fixed point
         coeffs = coeffs_interpolator(iso_value).reshape(2,lmax+1,lmax+1)
-        mesh, _ = shtools.get_reconstruction_from_coeffs(coeffs)
-
+        mesh, grid = shtools.get_reconstruction_from_coeffs(coeffs, lrec=2*lmax)
+        
         # Translate mesh to interpolated location
         centroid = centroids_interpolator(iso_value).reshape(1,3)
         mesh = translate_mesh(mesh,centroid)
-        
+                
         # Probe images of interest to create representation
-        mesh = get_intensity_representation(
+        rep = get_intensity_representation(
             polydata = mesh,
             images_to_probe = images_to_probe
         )
 
-        meshes.append(mesh)
-        
-        import pdb; pdb.set_trace()
+        representations.append(rep)
 
-    return meshes
+    # Number of points in the mesh
+    npts = mesh.GetNumberOfPoints()
+    
+    # Create a matrix to store the rpresentations
+    code = np.zeros((len(images_to_probe),1,len(representations),npts), dtype=np.float32)
+    
+    for i, rep in enumerate(representations):
+        for ch, (ch_name, data) in enumerate(rep.items()):
+            code[ch,0,i,:] = data
+
+    # Convert array into TIFF
+    code = AICSImage(code)
+
+    # Save channel names
+    ch_names = []
+    for ch_name, _ in representations[0].items():
+        ch_names.append(ch_name)
+    code.channel_names = ch_names
+    
+    return code
 
 def get_intensity_representation(polydata, images_to_probe):
 
-    '''
-    TBD: This function returns a 1d array
-    '''
+    """
+    This function probes the location of 3D mesh points in a list
+    of 3D images.
 
-    n = polydata.GetNumberOfPoints()
-    
-    for name, img in images_to_probe:
-                
-        vmin = img.min()
-        scalars = vtk.vtkFloatArray()
-        scalars.SetNumberOfTuples(n)
-        scalars.SetNumberOfComponents(1)
-        scalars.SetName(name)
-        for i in range(n):
-            v = vmin
-            r = polydata.GetPoint(i)
-            try:
-                v = img[int(r[2]),int(r[1]),int(r[0])]
-            except: pass
-            scalars.SetTuple1(i,v)
-        polydata.GetPointData().AddArray(scalars)
+    Parameters
+    --------------------
+    polydata: vtkPolyData
+        Polygonal 3D mesh
+    images_to_probe : list of tuples
+        [(a, b)] where a's are names for the image to be probed and b's are
+        expected to be 3D ndarrays representing the image to be probed. The
+        images are assumed to be previously registered to the cell and
+        nuclear images used to calculate the spherical harmonics
+        coefficients.
         
-    return polydata
+    Returns
+    -------
+    result: list of ndarrays
+        [(a,b)] where a is the probed image name and b is a 1d array with
+        the corresponding probed intensities.
+    """
+
+    representation = {}
+    coords = vtk_to_numpy(polydata.GetPoints().GetData())
+    x, y, z = [coords[:,i].astype(np.int) for i in range(3)]
+    for name, img in images_to_probe:
+        # Bound the values of x, y and z coordinates to fit inside the
+        # probe image
+        x_clip = np.clip(x, 0, img.shape[2])
+        y_clip = np.clip(y, 0, img.shape[1])
+        z_clip = np.clip(z, 0, img.shape[0])
+        representation[name] = img[z_clip, y_clip, x_clip]
+                
+    return representation
 
 def get_croppped_version(mem, dna):
 

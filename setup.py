@@ -38,7 +38,7 @@ dev_requirements = [
 ]
 
 requirements = [
-    "aicsshparam>=0.0.13",
+    "aicsshparam>=0.0.14",
 ]
 
 extra_requirements = {

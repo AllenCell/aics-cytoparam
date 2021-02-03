@@ -1,27 +1,23 @@
-# Cytoplasm parameterization
+# Cytoplasm Parameterization
+
+[![Build Status](https://github.com/AllenCell/aics-cytoparam/workflows/Build%20Main/badge.svg)](https://github.com/AllenCell/aics-cytoparam/actions)
+[![Documentation](https://github.com/AllenCell/aics-cytoparam/workflows/Documentation/badge.svg)](https://AllenCell.github.io/aicscytoparam/)
+[![Code Coverage](https://codecov.io/gh/AllenCell/aics-cytoparam/branch/main/graph/badge.svg)](https://codecov.io/gh/AllenCell/aics-cytoparam)
 
 Spherical harmonics expansion coefficients-based parameterization of the cytoplasm and nucleoplasm for 3D cells
+---
+## Installation
 
-## Installation:
+**Stable Release:** `pip install aicscytoparam`<br>
+**Development Head:** `pip install git+https://github.com/AllenCell/aics-cytoparam.git`
 
-**Stable Release**: coming to pypi soon
+## Documentation
 
-**Build from source to make customization**: 
-
-```console
-git clone git@github.com:AllenCell/aics-cytoparam.git
-cd aics-cytoparam
-pip install -e .
-```
-
-## Documentation:
-
-TBA
-
+For full package documentation please visit [AllenCell.github.io/aicscytoparam](https://AllenCell.github.io/aicscytoparam).
 
 ## Development
-See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
 
 ## Questions?
 

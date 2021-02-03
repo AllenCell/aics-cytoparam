@@ -1,1 +1,3 @@
-# This is necessary here for packaging
+# -*- coding: utf-8 -*-
+
+"""Bin scripts package for aicscytoparam."""

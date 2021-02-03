@@ -39,6 +39,12 @@ dev_requirements = [
 
 requirements = [
     "aicsshparam>=0.0.14",
+    "tqdm",
+    "numpy",
+    "vtk>=9.0.0",
+    "aicsimageio>=3.0.0,<4.0.0",
+    "scipy",
+    "scikit-image>=0.15.0"
 ]
 
 extra_requirements = {

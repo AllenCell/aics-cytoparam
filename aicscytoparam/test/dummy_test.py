@@ -1,6 +1,6 @@
-from time import sleep
-from datetime import timedelta
+import numpy as np
 
 
 def test_dummy():
-    assert True
+    a = np.ones(5)
+    print(a)

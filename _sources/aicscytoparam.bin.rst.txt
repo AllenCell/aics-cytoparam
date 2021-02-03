@@ -1,0 +1,21 @@
+aicscytoparam.bin package
+=========================
+
+Submodules
+----------
+
+aicscytoparam.bin.my\_example module
+------------------------------------
+
+.. automodule:: aicscytoparam.bin.my_example
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: aicscytoparam.bin
+   :members:
+   :undoc-members:
+   :show-inheritance:

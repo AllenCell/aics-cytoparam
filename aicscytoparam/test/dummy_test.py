@@ -3,5 +3,4 @@ from datetime import timedelta
 
 
 def test_dummy():
-    assert(True)
-
+    assert True

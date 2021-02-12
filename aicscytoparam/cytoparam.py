@@ -10,7 +10,6 @@ from skimage import morphology as skmorpho
 from scipy import interpolate as spinterp
 from scipy.ndimage import morphology as scimorph
 
-<<<<<<< HEAD
 def parameterize_image_coordinates(
     seg_mem,
     seg_nuc,
@@ -73,10 +72,6 @@ def parameterize_image_coordinates(
     
     return coords
     
-def parameterization_from_shcoeffs(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos=[32,32], images_to_probe=None):
-    
-=======
-
 def parameterization_from_shcoeffs(
     coeffs_mem,
     centroid_mem,
@@ -86,7 +81,6 @@ def parameterization_from_shcoeffs(
     images_to_probe=None,
 ):
 
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
     """
     Runs the parameterization for a cell represented by its spherical
     harmonics coefficients calculated by using ther package aics-shparam.
@@ -130,7 +124,6 @@ def parameterization_from_shcoeffs(
 
     return representations
 
-<<<<<<< HEAD
 def get_interpolators(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos):
     
     """
@@ -165,7 +158,7 @@ def get_interpolators(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos)
     lmax = int(np.sqrt(nc/2.)-1)
     
     if nc != len(coeffs_nuc):
-        raise ValueError(f"Number of coefficients in mem_coeffs and nuc_coeffs are different: {nc,len(coeffs_nuc)}")
+        raise ValueError(f"Number of coefficients in mem_coeffs and nuc_coeffs are different:{nc,len(coeffs_nuc)}")
 
     # Concatenate centroid into same array for interpolation
     centroids = np.c_[centroid_nuc,centroid_nuc,centroid_mem]
@@ -254,12 +247,6 @@ def get_mapping_coordinates(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, 
     return coords
 
 def run_cellular_mapping(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos, images_to_probe=None):
-=======
-
-def run_cellular_mapping(
-    coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos, images_to_probe=None
-):
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
 
     """
     Interpolate spherical harmonics coefficients representing the nuclear centroid,
@@ -294,12 +281,8 @@ def run_cellular_mapping(
         interpolation levels and X is the number of points in the
         representation. C corresponds to the number of probed images.
     """
-<<<<<<< HEAD
-    
-    '''
-=======
 
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
+    '''
     # Total number of coefficients
     nc = len(coeffs_mem)
     # Degree of the expansion (lmax)
@@ -428,7 +411,6 @@ def get_intensity_representation(polydata, images_to_probe):
 
     return representation
 
-<<<<<<< HEAD
 def voxelize_mesh(
     imagedata,
     shape,
@@ -457,286 +439,6 @@ def voxelize_mesh(
         Binary array.
     """
     
-    # Voxelize meshes using vtk image stencil
-=======
-
-def get_croppped_version(mem, dna):
-
-    z, y, x = np.where(mem)
-    xmin = x.min() - 1
-    xmax = x.max() + 2
-    ymin = y.min() - 1
-    ymax = y.max() + 2
-    zmin = z.min() - 1
-    zmax = z.max() + 2
-
-    mem = mem[zmin:zmax, ymin:ymax, xmin:xmax]
-    dna = dna[zmin:zmax, ymin:ymax, xmin:xmax]
-
-    return mem, dna, (zmin, zmax, ymin, ymax, xmin, xmax)
-
-
-def heat_eq_step(omega):
-
-    """
-    Executes a single step of the heat equation
-
-    """
-
-    omega[1:-1, 1:-1, 1:-1] += (
-        omega[1:-1, 1:-1, :-2]
-        + omega[1:-1, 1:-1, 2:]
-        + omega[1:-1, :-2, 1:-1]
-        + omega[1:-1, 2:, 1:-1]
-        + omega[2:, 1:-1, 1:-1]
-        + omega[:-2, 1:-1, 1:-1]
-    ) / 6.0 - omega[1:-1, 1:-1, 1:-1]
-
-    return omega
-
-
-def get_geodesics(seg_mem, seg_nuc, nisos=8):
-
-    """
-    Calculates an approximation for geodesic distances within the cell
-    by solving the heat equation at short time scales
-    """
-
-    geodesics = np.zeros_like(seg_mem)
-
-    seg_mem, seg_nuc, roi = get_croppped_version(seg_mem, seg_nuc)
-
-    # Create masks (1 = cytoplasm, 2 = nucleus)
-    mask = (seg_mem > 0).astype(np.uint8) + (seg_nuc > 0).astype(np.uint8)
-
-    # Calculates dmax
-    edtm = scimorph.distance_transform_edt(mask > 0)
-    dmax = int(edtm.max())
-
-    # Values for Dirichlet boundary condition
-    tmin = np.exp(0)
-    tmid = np.exp(1)
-    tmax = np.exp(2)
-
-    # Create domain
-    omega = tmid * np.ones(mask.shape, dtype=np.float32)
-
-    # Find boundaries pixels
-    warms = skseg.find_boundaries(mask > 0, connectivity=1, mode="inner")
-    colds = skseg.find_boundaries(mask > 1, connectivity=1, mode="inner")
-    freez = np.zeros_like(colds)
-    z, y, x = np.where(mask == 2)
-    freez[int(z.mean()), int(y.mean()), int(x.mean())] = True
-    freez = skmorpho.binary_dilation(freez, selem=np.ones((13, 13, 13)))
-
-    warms = np.where(warms)
-    colds = np.where(colds)
-    freez = np.where(freez)
-
-    # Initial state
-    omega[freez] = tmin
-    omega[colds] = tmid
-    omega[warms] = tmax
-
-    # Solve heat equation for short time scale
-    for run in range(50 * dmax):
-
-        omega = heat_eq_step(omega)
-
-        omega[freez] = tmin
-        omega[colds] = tmid
-        omega[warms] = tmax
-
-    omega[mask == 0] = 0
-    omega[omega > 0] = np.log(omega[omega > 0])
-
-    # Estimate distances
-    geodists = np.zeros_like(omega)
-    # Exponentially spaced bins
-    bins = np.exp(np.power(np.linspace(0.0, 1.0, nisos), 4))
-    bins = 1 - (bins - bins.min()) / (bins.max() - bins.min())
-    # Digitize values within the nucleus
-    geodists[mask == 2] = 1 + np.digitize(omega[mask == 2].flatten(), bins[::-1])
-    # Digitize values within the cytoplasm
-    geodists[mask == 1] = (nisos + 1) + np.digitize(
-        (omega[mask == 1] - 1).flatten(), bins[::-1]
-    )
-    # Set nuclear centroid as one
-    geodists[int(z.mean()), int(y.mean()), int(x.mean())] = 1
-    # Save
-    geodists = geodists.astype(np.uint8)
-    geodists[geodists == 0] = 1 + geodists.max()
-
-    geodesics[roi[0] : roi[1], roi[2] : roi[3], roi[4] : roi[5]] = geodists
-
-    geodesics[geodesics == 0] = geodists.max()
-
-    return geodesics
-
-
-def prob_image(polydata, images_to_probe):
-
-    """
-    Probe a multichannel image at the polydata points
-    """
-
-    n = polydata.GetNumberOfPoints()
-    for img, name in images_to_probe:
-        vmin = img.min()
-        scalars = vtk.vtkFloatArray()
-        scalars.SetNumberOfTuples(n)
-        scalars.SetNumberOfComponents(1)
-        scalars.SetName(name)
-        for i in range(n):
-            v = vmin
-            r = polydata.GetPoint(i)
-            try:
-                v = img[int(r[2]), int(r[1]), int(r[0])]
-            except Exception:
-                pass
-            scalars.SetTuple1(i, v)
-        polydata.GetPointData().AddArray(scalars)
-
-    return polydata
-
-
-def get_geodesic_meshes(geodists, lmax=32, images_to_probe=None):
-
-    """
-    Convert image with geodesic distances into isosurfaces
-    """
-
-    iso_values = np.unique(geodists)[:-1]
-
-    meshes = []
-    for iso in iso_values:
-
-        (coeffs, grid_rec), (image_, mesh, grid, transform) = shparam.get_shcoeffs(
-            image=(geodists <= iso).astype(np.uint8), lmax=lmax, alignment_2d=False
-        )
-
-        centroid = (transform[0], transform[1], transform[2])
-
-        mesh_rec = shtools.get_reconstruction_from_grid(grid_rec, centroid=centroid)
-
-        if images_to_probe is not None:
-            mesh_rec = prob_image(mesh_rec, images_to_probe)
-
-        meshes.append(mesh_rec)
-
-    return meshes
-
-
-def interpolate_this_trace(trace, npts):
-
-    """
-    Interpolate a given trace
-    """
-
-    # length as the parametric variable
-    length = np.cumsum(
-        np.pad(np.sqrt(np.power(np.diff(trace, axis=0), 2).sum(axis=1)), (1, 0))
-    )
-    # normalize parametric variable from 0 to 1
-    total_length = length[-1]
-    length /= total_length
-    # parametric trace
-    trace_param = np.hstack([length.reshape(-1, 1), trace])
-    # interpolate parametric trace
-    ftrace = spinterp.interp1d(trace_param[:, 0].T, trace_param[:, 1:].T, kind="linear")
-    trace_interp = ftrace(np.linspace(0, 1, npts)).T
-    return trace_interp, total_length
-
-
-def get_traces_(meshes, trace_pts=64, images_to_probe=None):
-
-    pts = vtk.vtkPoints()
-    cellarray = vtk.vtkCellArray()
-
-    npts = meshes[0].GetNumberOfPoints()
-
-    scalars = vtk.vtkFloatArray()
-    scalars.SetNumberOfComponents(1)
-    scalars.SetName("length")
-
-    for i in range(npts):
-
-        trace = []
-        for mesh in meshes:
-            r = mesh.GetPoint(i)
-            trace.append(r)
-        trace = np.array(trace)
-
-        trace_interp, total_length = interpolate_this_trace(trace, npts=trace_pts)
-
-        cellarray.InsertNextCell(len(trace_interp))
-
-        for r in trace_interp:
-            pid = pts.InsertNextPoint(r)
-            cellarray.InsertCellPoint(pid)
-            scalars.InsertNextTuple1(total_length)
-
-    polydata = vtk.vtkPolyData()
-    polydata.SetPoints(pts)
-    polydata.SetLines(cellarray)
-    polydata.GetPointData().AddArray(scalars)
-
-    if images_to_probe is not None:
-        polydata = prob_image(polydata, images_to_probe)
-
-    return polydata
-
-
-def get_traces(meshes, images_to_probe=None):
-
-    pts = vtk.vtkPoints()
-    cellarray = vtk.vtkCellArray()
-
-    npts = meshes[0].GetNumberOfPoints()
-
-    scalars_isoval = vtk.vtkFloatArray()
-    scalars_isoval.SetNumberOfComponents(1)
-    scalars_isoval.SetName("isoval")
-
-    scalars_length = vtk.vtkFloatArray()
-    scalars_length.SetNumberOfComponents(1)
-    scalars_length.SetName("length")
-
-    for i in range(npts):
-
-        trace = []
-        for mesh in meshes:
-            r = mesh.GetPoint(i)
-            trace.append(r)
-        trace = np.array(trace)
-
-        cellarray.InsertNextCell(len(trace))
-
-        dr = 0.0
-        ro = [0, 0, 0]
-        for iso, r in enumerate(trace):
-            pid = pts.InsertNextPoint(r)
-            cellarray.InsertCellPoint(pid)
-            scalars_isoval.InsertNextTuple1(iso)
-            dr += np.sqrt(((np.array(ro) - np.array(r)) ** 2).sum())
-            scalars_length.InsertNextTuple1(dr)
-            ro = r
-
-    polydata = vtk.vtkPolyData()
-    polydata.SetPoints(pts)
-    polydata.SetLines(cellarray)
-    polydata.GetPointData().AddArray(scalars_isoval)
-    polydata.GetPointData().AddArray(scalars_length)
-
-    if images_to_probe is not None:
-        polydata = prob_image(polydata, images_to_probe)
-
-    return polydata
-
-
-def voxelize_mesh(imagedata, shape, mesh, origin):
-
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
     pol2stenc = vtk.vtkPolyDataToImageStencil()
     pol2stenc.SetInputData(mesh)
     pol2stenc.SetOutputOrigin(origin)
@@ -756,12 +458,7 @@ def voxelize_mesh(imagedata, shape, mesh, origin):
 
     return img
 
-<<<<<<< HEAD
-def voxelize_meshes(meshes, representation=None):
-=======
-
 def voxelize_meshes(meshes):
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
 
     """
     List of meshes to be voxelized into an image. Usually
@@ -792,7 +489,6 @@ def voxelize_meshes(meshes):
     # Find mesh coordinates
     coords = vtk_to_numpy(mesh.GetPoints().GetData())
 
-<<<<<<< HEAD
     # Find bounds of the mesh
     rmin = (coords.min(axis=0)-0.5).astype(np.int)
     rmax = (coords.max(axis=0)+0.5).astype(np.int)
@@ -801,14 +497,6 @@ def voxelize_meshes(meshes):
     w = int(2 + (rmax[0]-rmin[0]))
     h = int(2 + (rmax[1]-rmin[1]))
     d = int(2 + (rmax[2]-rmin[2]))
-=======
-    rmin = (coords.min(axis=0) - 0.5).astype(np.int)
-    rmax = (coords.max(axis=0) + 0.5).astype(np.int)
-
-    w = int(2 + (rmax[0] - rmin[0]))
-    h = int(2 + (rmax[1] - rmin[1]))
-    d = int(2 + (rmax[2] - rmin[2]))
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
 
     # Create image data
     imagedata = vtk.vtkImageData()
@@ -817,45 +505,28 @@ def voxelize_meshes(meshes):
     imagedata.SetOrigin(rmin)
     imagedata.AllocateScalars(vtk.VTK_UNSIGNED_CHAR, 1)
 
-<<<<<<< HEAD
     # Set all values to 1
     imagedata.GetPointData().GetScalars().FillComponent(0,1)
     
     # Create an empty 3D numpy array to sum up
     # voxelization of all meshes
-=======
-    for i in range(imagedata.GetNumberOfPoints()):
-        imagedata.GetPointData().GetScalars().SetTuple1(i, 1)
-
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
     img = np.zeros((d, h, w), dtype=np.uint8)
 
     # Voxelize one mesh at the time
     for mid, mesh in enumerate(meshes):
         seg = voxelize_mesh(
-<<<<<<< HEAD
             imagedata = imagedata,
             shape = (d, h, w),
             mesh = mesh,
             origin = rmin
         )
         img[seg>0] = mid+1
-=======
-            imagedata=imagedata, shape=(d, h, w), mesh=mesh, origin=rmin
-        )
-
-        img += seg
-
-    origin = rmin
-    origin = origin.reshape(1, 3)
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
 
     # Origin of the reference system in the image
     origin = rmin.reshape(1,3)
     
     return img, origin
 
-<<<<<<< HEAD
 def morph_representation_on_shape(img, param_img_coords, representation):
     
     """
@@ -899,89 +570,15 @@ def morph_representation_on_shape(img, param_img_coords, representation):
     cell = np.where(img>0)
     img = img.astype(np.float32)
     img[cell] = nninterpolator(cell)
-=======
-
-def copy_content(sources, destination, arrays, normalize=False):
-
-    data = {}
-    for array in arrays:
-        data[array] = []
-
-    for source in tqdm.tqdm(sources):
-
-        if os.path.exists(source):
-
-            reader = vtk.vtkPolyDataReader()
-            reader.SetFileName(source)
-            reader.Update()
-
-            mesh = reader.GetOutput()
-
-            available_arrays = []
-            for arr in range(mesh.GetPointData().GetNumberOfArrays()):
-                available_arrays.append(mesh.GetPointData().GetArrayName(arr))
-
-            for arr, array in enumerate(arrays):
-
-                if array in available_arrays:
-
-                    scalars = mesh.GetPointData().GetArray(array)
-
-                    scalars = vtk_to_numpy(scalars)
-
-                    data[array].append(scalars)
-
-                else:
-
-                    print(
-                        f"WARNING: Array {array} not found."
-                        f"Arrays available {available_arrays}. Source: {source}"
-                    )
-
-    npts = destination.GetNumberOfPoints()
-
-    for array in arrays:
-
-        for op, suffix in zip([np.mean, np.std], ["avg", "std"]):
-
-            if len(data[array]) > 0:
-                data_op = op(np.array(data[array]), axis=0)
-            else:
-                # If no signal found
-                data_op = np.zeros(npts)
-
-            new_array = vtk.vtkFloatArray()
-            new_array.SetName(f"{array}_{suffix}")
-            new_array.SetNumberOfComponents(1)
-            new_array.SetNumberOfTuples(npts)
-            for i in range(npts):
-                new_array.SetTuple1(i, data_op[i])
-            destination.GetPointData().AddArray(new_array)
-
-    return destination
-
-
-def translate_mesh(polydata, dr):
-
-    if dr.shape != (1, 3):
-        raise ValueError(
-            f"Shape mismatch. dr has shape: {dr.shape}."
-            "Expected: (1,3) for 3D displacement vector."
-        )
-
-    coords = vtk_to_numpy(polydata.GetPoints().GetData())
-
-    coords += dr
-
-    polydata.GetPoints().SetData(numpy_to_vtk(coords))
->>>>>>> 662aaa4ac712a893668d2bbd52ab873ee2e3eda4
 
     return img
 
-
-"""
 def evaluate_reconstruction(seg_nuc, seg_mem, image_to_probe, array_name):
 
+    """
+    TBD
+    """
+    
     # Run parameterization
     meshes, traces = parametrize(
         seg_mem=seg_mem, seg_nuc=seg_nuc, images_to_probe=[(image_to_probe, array_name)]
@@ -1044,8 +641,3 @@ def evaluate_reconstruction(seg_nuc, seg_mem, image_to_probe, array_name):
     pcorr = np.corrcoef(image_to_probe[valids], field_interp[valids])[0, 1]
 
     return meshes, traces, (projs, projs_rec), pcorr
-"""
-
-if __name__ == "__main__":
-
-    print("Helper functions for cytoparam.")

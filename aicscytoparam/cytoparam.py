@@ -9,10 +9,7 @@ from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 
 def parameterize_image_coordinates(
-    seg_mem: np.array,
-    seg_nuc: np.array,
-    lmax: int,
-    nisos: List
+    seg_mem: np.array, seg_nuc: np.array, lmax: int, nisos: List
 ):
 
     """
@@ -48,24 +45,20 @@ def parameterize_image_coordinates(
     """
 
     if (seg_mem.dtype != np.uint8) or (seg_nuc.dtype != np.uint8):
-        warnings.warn("One or more input images is not an 8-bit image\
-        and will be cast to 8-bit.")
+        warnings.warn(
+            "One or more input images is not an 8-bit image\
+        and will be cast to 8-bit."
+        )
 
     # Cell SHE coefficients
     (coeffs_mem, _), (_, _, _, centroid_mem) = shparam.get_shcoeffs(
-        image=seg_mem,
-        lmax=lmax,
-        sigma=0,
-        compute_lcc=True,
-        alignment_2d=False)
+        image=seg_mem, lmax=lmax, sigma=0, compute_lcc=True, alignment_2d=False
+    )
 
     # Nuclear SHE coefficients
     (coeffs_nuc, _), (_, _, _, centroid_nuc) = shparam.get_shcoeffs(
-        image=seg_nuc,
-        lmax=lmax,
-        sigma=0,
-        compute_lcc=True,
-        alignment_2d=False)
+        image=seg_nuc, lmax=lmax, sigma=0, compute_lcc=True, alignment_2d=False
+    )
 
     # Get Coordinates
     coords = get_mapping_coordinates(
@@ -73,7 +66,7 @@ def parameterize_image_coordinates(
         centroid_mem=centroid_mem,
         coeffs_nuc=coeffs_nuc,
         centroid_nuc=centroid_nuc,
-        nisos=nisos
+        nisos=nisos,
     )
 
     # Shift coordinates to the center of the input
@@ -125,8 +118,10 @@ def parameterization_from_shcoeffs(
     """
 
     if len(coeffs_mem) != len(coeffs_nuc):
-        raise ValueError(f"Number of cell and nuclear coefficients\
-        do not match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
+        raise ValueError(
+            f"Number of cell and nuclear coefficients\
+        do not match: {len(coeffs_mem)} and {len(coeffs_nuc)}."
+        )
 
     representations = cellular_mapping(
         coeffs_mem=coeffs_mem,
@@ -145,7 +140,7 @@ def get_interpolators(
     centroid_mem: Dict,
     coeffs_nuc: Dict,
     centroid_nuc: Dict,
-    nisos: List
+    nisos: List,
 ):
 
     """
@@ -175,17 +170,21 @@ def get_interpolators(
     """
 
     if len(coeffs_mem) != len(coeffs_nuc):
-        raise ValueError(f"Number of cell and nuclear coefficients\
-        do not match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
+        raise ValueError(
+            f"Number of cell and nuclear coefficients\
+        do not match: {len(coeffs_mem)} and {len(coeffs_nuc)}."
+        )
 
     # Total number of coefficients
     nc = len(coeffs_mem)
     # Degree of the expansion (lmax)
-    lmax = int(np.sqrt(nc / 2.) - 1)
+    lmax = int(np.sqrt(nc / 2.0) - 1)
 
     if nc != len(coeffs_nuc):
-        raise ValueError(f"Number of coefficients in mem_coeffs and\
-        nuc_coeffs are different:{nc,len(coeffs_nuc)}")
+        raise ValueError(
+            f"Number of coefficients in mem_coeffs and\
+        nuc_coeffs are different:{nc,len(coeffs_nuc)}"
+        )
 
     # Concatenate centroid into same array for interpolation
     centroids = np.c_[centroid_nuc, centroid_nuc, centroid_mem]
@@ -195,11 +194,11 @@ def get_interpolators(
     coeffs_mem_arr = np.zeros((2, lmax + 1, lmax + 1))
     coeffs_nuc_arr = np.zeros((2, lmax + 1, lmax + 1))
     # Populate cell and nuclear arrays and concatenate into a single arr
-    for k, kname in enumerate(['C', 'S']):
+    for k, kname in enumerate(["C", "S"]):
         for L in range(lmax + 1):
             for m in range(lmax + 1):
-                coeffs_mem_arr[k, L, m] = coeffs_mem[f'shcoeffs_L{L}M{m}{kname}']
-                coeffs_nuc_arr[k, L, m] = coeffs_nuc[f'shcoeffs_L{L}M{m}{kname}']
+                coeffs_mem_arr[k, L, m] = coeffs_mem[f"shcoeffs_L{L}M{m}{kname}"]
+                coeffs_nuc_arr[k, L, m] = coeffs_nuc[f"shcoeffs_L{L}M{m}{kname}"]
     coeffs_mem_arr = coeffs_mem_arr.flatten()
     coeffs_nuc_arr = coeffs_nuc_arr.flatten()
     coeffs = np.c_[coeffs_ctr_arr, coeffs_nuc_arr, coeffs_mem_arr]
@@ -223,7 +222,7 @@ def get_mapping_coordinates(
     centroid_mem: List,
     coeffs_nuc: Dict,
     centroid_nuc: List,
-    nisos: List
+    nisos: List,
 ):
 
     """
@@ -255,8 +254,10 @@ def get_mapping_coordinates(
     """
 
     if len(coeffs_mem) != len(coeffs_nuc):
-        raise ValueError(f"Number of cell and nuclear coefficients do not\
-        match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
+        raise ValueError(
+            f"Number of cell and nuclear coefficients do not\
+        match: {len(coeffs_mem)} and {len(coeffs_nuc)}."
+        )
 
     # Get interpolators
     coeffs_interpolator, centroids_interpolator, lmax = get_interpolators(
@@ -264,7 +265,7 @@ def get_mapping_coordinates(
         centroid_mem=centroid_mem,
         coeffs_nuc=coeffs_nuc,
         centroid_nuc=centroid_nuc,
-        nisos=nisos
+        nisos=nisos,
     )
 
     x_coords, y_coords, z_coords = [], [], []
@@ -291,7 +292,7 @@ def cellular_mapping(
     coeffs_nuc: Dict,
     centroid_nuc: List,
     nisos: List,
-    images_to_probe: Optional[List] = None
+    images_to_probe: Optional[List] = None,
 ):
 
     """
@@ -329,8 +330,10 @@ def cellular_mapping(
     """
 
     if len(coeffs_mem) != len(coeffs_nuc):
-        raise ValueError(f"Number of cell and nuclear coefficients do not\
-        match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
+        raise ValueError(
+            f"Number of cell and nuclear coefficients do not\
+        match: {len(coeffs_mem)} and {len(coeffs_nuc)}."
+        )
 
     # Get interpolators
     coeffs_interpolator, centroids_interpolator, lmax = get_interpolators(
@@ -338,7 +341,7 @@ def cellular_mapping(
         centroid_mem=centroid_mem,
         coeffs_nuc=coeffs_nuc,
         centroid_nuc=centroid_nuc,
-        nisos=nisos
+        nisos=nisos,
     )
 
     representations = []
@@ -356,8 +359,7 @@ def cellular_mapping(
 
         # Probe images of interest to create representation
         rep = get_intensity_representation(
-            polydata=mesh,
-            images_to_probe=images_to_probe
+            polydata=mesh, images_to_probe=images_to_probe
         )
 
         representations.append(rep)
@@ -386,10 +388,7 @@ def cellular_mapping(
     return code
 
 
-def get_intensity_representation(
-    polydata: vtk.vtkPolyData,
-    images_to_probe: List
-):
+def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: List):
 
     """
     This function probes the location of 3D mesh points in a list
@@ -428,10 +427,7 @@ def get_intensity_representation(
 
 
 def voxelize_mesh(
-    imagedata: vtk.vtkImageData,
-    shape: Tuple,
-    mesh: vtk.vtkPolyData,
-    origin: List
+    imagedata: vtk.vtkImageData, shape: Tuple, mesh: vtk.vtkPolyData, origin: List
 ):
 
     """
@@ -475,9 +471,7 @@ def voxelize_mesh(
     return img
 
 
-def voxelize_meshes(
-    meshes: List
-):
+def voxelize_meshes(meshes: List):
 
     """
     List of meshes to be voxelized into an image. Usually
@@ -534,10 +528,7 @@ def voxelize_meshes(
     # Voxelize one mesh at the time
     for mid, mesh in enumerate(meshes):
         seg = voxelize_mesh(
-            imagedata=imagedata,
-            shape=(d, h, w),
-            mesh=mesh,
-            origin=rmin
+            imagedata=imagedata, shape=(d, h, w), mesh=mesh, origin=rmin
         )
         img[seg > 0] = mid + 1
 
@@ -548,9 +539,7 @@ def voxelize_meshes(
 
 
 def morph_representation_on_shape(
-    img: np.array,
-    param_img_coords: np.array,
-    representation: np.array
+    img: np.array, param_img_coords: np.array, representation: np.array
 ):
 
     """
@@ -580,10 +569,12 @@ def morph_representation_on_shape(
     """
 
     if param_img_coords.shape[1:] != representation.shape:
-        raise ValueError(f"Parameterized image coordinates of\
+        raise ValueError(
+            f"Parameterized image coordinates of\
         shape {param_img_coords.shape} and representation of\
         shape {representation.shape} are expected to have the\
-        same shape.")
+        same shape."
+        )
 
     # Reshape coords from 3NM to 3P, where N is the number of
     # isovalues in the representation and M is the number of

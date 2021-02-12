@@ -191,10 +191,7 @@
 
 
 <div class="viewcode-block" id="parameterize_image_coordinates"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.parameterize_image_coordinates">[docs]</a><span class="k">def</span> <span class="nf">parameterize_image_coordinates</span><span class="p">(</span>
-    <span class="n">seg_mem</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
-    <span class="n">seg_nuc</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
-    <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span>
+    <span class="n">seg_mem</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">seg_nuc</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span>
 <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -230,24 +227,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">seg_mem</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">seg_nuc</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;One or more input images is not an 8-bit image</span><span class="se">\</span>
-<span class="s2">        and will be cast to 8-bit.&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;One or more input images is not an 8-bit image</span><span class="se">\</span>
+<span class="s2">        and will be cast to 8-bit.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Cell SHE coefficients</span>
     <span class="p">(</span><span class="n">coeffs_mem</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">centroid_mem</span><span class="p">)</span> <span class="o">=</span> <span class="n">shparam</span><span class="o">.</span><span class="n">get_shcoeffs</span><span class="p">(</span>
-        <span class="n">image</span><span class="o">=</span><span class="n">seg_mem</span><span class="p">,</span>
-        <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">,</span>
-        <span class="n">sigma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">compute_lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">alignment_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">seg_mem</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">compute_lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alignment_2d</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
 
     <span class="c1"># Nuclear SHE coefficients</span>
     <span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">centroid_nuc</span><span class="p">)</span> <span class="o">=</span> <span class="n">shparam</span><span class="o">.</span><span class="n">get_shcoeffs</span><span class="p">(</span>
-        <span class="n">image</span><span class="o">=</span><span class="n">seg_nuc</span><span class="p">,</span>
-        <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">,</span>
-        <span class="n">sigma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">compute_lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">alignment_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">seg_nuc</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">compute_lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alignment_2d</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
 
     <span class="c1"># Get Coordinates</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">get_mapping_coordinates</span><span class="p">(</span>
@@ -255,7 +248,7 @@
         <span class="n">centroid_mem</span><span class="o">=</span><span class="n">centroid_mem</span><span class="p">,</span>
         <span class="n">coeffs_nuc</span><span class="o">=</span><span class="n">coeffs_nuc</span><span class="p">,</span>
         <span class="n">centroid_nuc</span><span class="o">=</span><span class="n">centroid_nuc</span><span class="p">,</span>
-        <span class="n">nisos</span><span class="o">=</span><span class="n">nisos</span>
+        <span class="n">nisos</span><span class="o">=</span><span class="n">nisos</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Shift coordinates to the center of the input</span>
@@ -307,8 +300,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients</span><span class="se">\</span>
-<span class="s2">        do not match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients</span><span class="se">\</span>
+<span class="s2">        do not match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">representations</span> <span class="o">=</span> <span class="n">cellular_mapping</span><span class="p">(</span>
         <span class="n">coeffs_mem</span><span class="o">=</span><span class="n">coeffs_mem</span><span class="p">,</span>
@@ -327,7 +322,7 @@
     <span class="n">centroid_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span>
+    <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
 <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -357,17 +352,21 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients</span><span class="se">\</span>
-<span class="s2">        do not match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients</span><span class="se">\</span>
+<span class="s2">        do not match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Total number of coefficients</span>
     <span class="n">nc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span>
     <span class="c1"># Degree of the expansion (lmax)</span>
-    <span class="n">lmax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nc</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">lmax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nc</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">nc</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of coefficients in mem_coeffs and</span><span class="se">\</span>
-<span class="s2">        nuc_coeffs are different:</span><span class="si">{</span><span class="n">nc</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of coefficients in mem_coeffs and</span><span class="se">\</span>
+<span class="s2">        nuc_coeffs are different:</span><span class="si">{</span><span class="n">nc</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Concatenate centroid into same array for interpolation</span>
     <span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">centroid_nuc</span><span class="p">,</span> <span class="n">centroid_nuc</span><span class="p">,</span> <span class="n">centroid_mem</span><span class="p">]</span>
@@ -377,11 +376,11 @@
     <span class="n">coeffs_mem_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">coeffs_nuc_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="c1"># Populate cell and nuclear arrays and concatenate into a single arr</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">kname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">kname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">]):</span>
         <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">coeffs_mem_arr</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">coeffs_mem</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;shcoeffs_L</span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s1">M</span><span class="si">{</span><span class="n">m</span><span class="si">}{</span><span class="n">kname</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
-                <span class="n">coeffs_nuc_arr</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">coeffs_nuc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;shcoeffs_L</span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s1">M</span><span class="si">{</span><span class="n">m</span><span class="si">}{</span><span class="n">kname</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+                <span class="n">coeffs_mem_arr</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">coeffs_mem</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;shcoeffs_L</span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s2">M</span><span class="si">{</span><span class="n">m</span><span class="si">}{</span><span class="n">kname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="n">coeffs_nuc_arr</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">coeffs_nuc</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;shcoeffs_L</span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s2">M</span><span class="si">{</span><span class="n">m</span><span class="si">}{</span><span class="n">kname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="n">coeffs_mem_arr</span> <span class="o">=</span> <span class="n">coeffs_mem_arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">coeffs_nuc_arr</span> <span class="o">=</span> <span class="n">coeffs_nuc_arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">coeffs_ctr_arr</span><span class="p">,</span> <span class="n">coeffs_nuc_arr</span><span class="p">,</span> <span class="n">coeffs_mem_arr</span><span class="p">]</span>
@@ -405,7 +404,7 @@
     <span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
-    <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span>
+    <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
 <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -437,8 +436,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients do not</span><span class="se">\</span>
-<span class="s2">        match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients do not</span><span class="se">\</span>
+<span class="s2">        match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Get interpolators</span>
     <span class="n">coeffs_interpolator</span><span class="p">,</span> <span class="n">centroids_interpolator</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">=</span> <span class="n">get_interpolators</span><span class="p">(</span>
@@ -446,7 +447,7 @@
         <span class="n">centroid_mem</span><span class="o">=</span><span class="n">centroid_mem</span><span class="p">,</span>
         <span class="n">coeffs_nuc</span><span class="o">=</span><span class="n">coeffs_nuc</span><span class="p">,</span>
         <span class="n">centroid_nuc</span><span class="o">=</span><span class="n">centroid_nuc</span><span class="p">,</span>
-        <span class="n">nisos</span><span class="o">=</span><span class="n">nisos</span>
+        <span class="n">nisos</span><span class="o">=</span><span class="n">nisos</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">z_coords</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
@@ -473,7 +474,7 @@
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
-    <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -511,8 +512,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients do not</span><span class="se">\</span>
-<span class="s2">        match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients do not</span><span class="se">\</span>
+<span class="s2">        match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Get interpolators</span>
     <span class="n">coeffs_interpolator</span><span class="p">,</span> <span class="n">centroids_interpolator</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">=</span> <span class="n">get_interpolators</span><span class="p">(</span>
@@ -520,7 +523,7 @@
         <span class="n">centroid_mem</span><span class="o">=</span><span class="n">centroid_mem</span><span class="p">,</span>
         <span class="n">coeffs_nuc</span><span class="o">=</span><span class="n">coeffs_nuc</span><span class="p">,</span>
         <span class="n">centroid_nuc</span><span class="o">=</span><span class="n">centroid_nuc</span><span class="p">,</span>
-        <span class="n">nisos</span><span class="o">=</span><span class="n">nisos</span>
+        <span class="n">nisos</span><span class="o">=</span><span class="n">nisos</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">representations</span> <span class="o">=</span> <span class="p">[]</span>
@@ -538,8 +541,7 @@
 
         <span class="c1"># Probe images of interest to create representation</span>
         <span class="n">rep</span> <span class="o">=</span> <span class="n">get_intensity_representation</span><span class="p">(</span>
-            <span class="n">polydata</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
-            <span class="n">images_to_probe</span><span class="o">=</span><span class="n">images_to_probe</span>
+            <span class="n">polydata</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="n">images_to_probe</span><span class="o">=</span><span class="n">images_to_probe</span>
         <span class="p">)</span>
 
         <span class="n">representations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rep</span><span class="p">)</span>
@@ -568,10 +570,7 @@
     <span class="k">return</span> <span class="n">code</span></div>
 
 
-<div class="viewcode-block" id="get_intensity_representation"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">[docs]</a><span class="k">def</span> <span class="nf">get_intensity_representation</span><span class="p">(</span>
-    <span class="n">polydata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span>
-    <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">List</span>
-<span class="p">):</span>
+<div class="viewcode-block" id="get_intensity_representation"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">[docs]</a><span class="k">def</span> <span class="nf">get_intensity_representation</span><span class="p">(</span><span class="n">polydata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span> <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function probes the location of 3D mesh points in a list</span>
@@ -610,10 +609,7 @@
 
 
 <div class="viewcode-block" id="voxelize_mesh"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.voxelize_mesh">[docs]</a><span class="k">def</span> <span class="nf">voxelize_mesh</span><span class="p">(</span>
-    <span class="n">imagedata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkImageData</span><span class="p">,</span>
-    <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span>
-    <span class="n">mesh</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span>
-    <span class="n">origin</span><span class="p">:</span> <span class="n">List</span>
+    <span class="n">imagedata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkImageData</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">List</span>
 <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -657,9 +653,7 @@
     <span class="k">return</span> <span class="n">img</span></div>
 
 
-<div class="viewcode-block" id="voxelize_meshes"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.voxelize_meshes">[docs]</a><span class="k">def</span> <span class="nf">voxelize_meshes</span><span class="p">(</span>
-    <span class="n">meshes</span><span class="p">:</span> <span class="n">List</span>
-<span class="p">):</span>
+<div class="viewcode-block" id="voxelize_meshes"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.voxelize_meshes">[docs]</a><span class="k">def</span> <span class="nf">voxelize_meshes</span><span class="p">(</span><span class="n">meshes</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    List of meshes to be voxelized into an image. Usually</span>
@@ -716,10 +710,7 @@
     <span class="c1"># Voxelize one mesh at the time</span>
     <span class="k">for</span> <span class="n">mid</span><span class="p">,</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">meshes</span><span class="p">):</span>
         <span class="n">seg</span> <span class="o">=</span> <span class="n">voxelize_mesh</span><span class="p">(</span>
-            <span class="n">imagedata</span><span class="o">=</span><span class="n">imagedata</span><span class="p">,</span>
-            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span>
-            <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
-            <span class="n">origin</span><span class="o">=</span><span class="n">rmin</span>
+            <span class="n">imagedata</span><span class="o">=</span><span class="n">imagedata</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">rmin</span>
         <span class="p">)</span>
         <span class="n">img</span><span class="p">[</span><span class="n">seg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -730,9 +721,7 @@
 
 
 <div class="viewcode-block" id="morph_representation_on_shape"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.morph_representation_on_shape">[docs]</a><span class="k">def</span> <span class="nf">morph_representation_on_shape</span><span class="p">(</span>
-    <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
-    <span class="n">param_img_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
-    <span class="n">representation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">param_img_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">representation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
 <span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -762,10 +751,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">param_img_coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">representation</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameterized image coordinates of</span><span class="se">\</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Parameterized image coordinates of</span><span class="se">\</span>
 <span class="s2">        shape </span><span class="si">{</span><span class="n">param_img_coords</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and representation of</span><span class="se">\</span>
 <span class="s2">        shape </span><span class="si">{</span><span class="n">representation</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> are expected to have the</span><span class="se">\</span>
-<span class="s2">        same shape.&quot;</span><span class="p">)</span>
+<span class="s2">        same shape.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Reshape coords from 3NM to 3P, where N is the number of</span>
     <span class="c1"># isovalues in the representation and M is the number of</span>

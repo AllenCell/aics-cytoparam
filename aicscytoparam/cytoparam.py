@@ -5,7 +5,7 @@ from aicsimageio import AICSImage
 from aicsshparam import shparam, shtools
 from scipy import interpolate as spinterp
 from typing import Optional, List, Dict, Tuple
-from vtk.util.numpy_support import vtk_to_numpy
+from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 def parameterize_image_coordinates(
     seg_mem: np.array,
@@ -36,6 +36,14 @@ def parameterize_image_coordinates(
         Array of shape 3xNxM, where NxM is the size of a
         parameterized intensity representation generated with
         same parameters lmax and nisos.
+    coeffs_mem: dict
+        Spherical harmonics coefficients that represent cell shape.
+    centroid_mem: tuple
+        (x,y,z) representing cell centroid.
+    coeffs_nuc: dict
+        Spherical harmonics coefficients that represent nuclear shape.
+    centroid_nuc: tuple
+        (x,y,z) representing nuclear centroid.
     """
     
     if (seg_mem.dtype != np.uint8) or (seg_nuc.dtype != np.uint8):
@@ -71,7 +79,7 @@ def parameterize_image_coordinates(
     # segmentations
     coords += np.array(centroid_mem).reshape(3,1,1)
     
-    return coords
+    return coords, (coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc)
     
 def parameterization_from_shcoeffs(
     coeffs_mem: Dict,
@@ -118,7 +126,7 @@ def parameterization_from_shcoeffs(
         raise ErrorValue(f"Number of cell and nuclear coefficients do not\
         match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
     
-    representations = run_cellular_mapping(
+    representations = cellular_mapping(
         coeffs_mem = coeffs_mem,
         centroid_mem = centroid_mem,
         coeffs_nuc = coeffs_nuc,
@@ -319,7 +327,7 @@ def cellular_mapping(
         match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
 
     # Get interpolators
-    coeffs_interpolator, centroids_interpolator = get_interpolators(
+    coeffs_interpolator, centroids_interpolator, lmax = get_interpolators(
         coeffs_mem = coeffs_mem,
         centroid_mem = centroid_mem,
         coeffs_nuc = coeffs_nuc,
@@ -336,8 +344,10 @@ def cellular_mapping(
 
         # Translate mesh to interpolated location
         centroid = centroids_interpolator(iso_value).reshape(1, 3)
-        mesh = translate_mesh(mesh, centroid)
-
+        coords = vtk_to_numpy(mesh.GetPoints().GetData())
+        coords += centroid
+        mesh.GetPoints().SetData(numpy_to_vtk(coords))
+        
         # Probe images of interest to create representation
         rep = get_intensity_representation(
             polydata=mesh, images_to_probe=images_to_probe
@@ -367,7 +377,6 @@ def cellular_mapping(
     code.channel_names = ch_names
 
     return code
-
 
 def get_intensity_representation(
     polydata: vtk.vtkPolyData,

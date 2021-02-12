@@ -1,20 +1,17 @@
-import os
 import vtk
-import tqdm
+import warnings
 import numpy as np
 from aicsimageio import AICSImage
 from aicsshparam import shparam, shtools
-from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
-from skimage import segmentation as skseg
-from skimage import morphology as skmorpho
 from scipy import interpolate as spinterp
-from scipy.ndimage import morphology as scimorph
+from typing import Optional, List, Dict, Tuple
+from vtk.util.numpy_support import vtk_to_numpy
 
 def parameterize_image_coordinates(
-    seg_mem,
-    seg_nuc,
-    lmax = 16,
-    nisos = [32,32]
+    seg_mem: np.array,
+    seg_nuc: np.array,
+    lmax: int,
+    nisos: List
 ):
 
     """
@@ -40,6 +37,10 @@ def parameterize_image_coordinates(
         parameterized intensity representation generated with
         same parameters lmax and nisos.
     """
+    
+    if (seg_mem.dtype != np.uint8) or (seg_nuc.dtype != np.uint8):
+        warnings.warn("One or more input images is not an 8-bit image\
+        and will be cast to 8-bit.")
     
     # Cell SHE coefficients
     (coeffs_mem, _), (_, _, _, centroid_mem)= shparam.get_shcoeffs(
@@ -73,14 +74,14 @@ def parameterize_image_coordinates(
     return coords
     
 def parameterization_from_shcoeffs(
-    coeffs_mem,
-    centroid_mem,
-    coeffs_nuc,
-    centroid_nuc,
-    nisos=[32, 32],
-    images_to_probe=None,
+    coeffs_mem: Dict,
+    centroid_mem: List,
+    coeffs_nuc: Dict,
+    centroid_nuc: List,
+    nisos: List,
+    images_to_probe: Optional[List] = None,
 ):
-
+    
     """
     Runs the parameterization for a cell represented by its spherical
     harmonics coefficients calculated by using ther package aics-shparam.
@@ -113,18 +114,28 @@ def parameterization_from_shcoeffs(
         representation. C corresponds to the number of probed images.
     """
 
+    if len(coeffs_mem) != len(coeffs_nuc):
+        raise ErrorValue(f"Number of cell and nuclear coefficients do not\
+        match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
+    
     representations = run_cellular_mapping(
-        coeffs_mem=coeffs_mem,
-        centroid_mem=centroid_mem,
-        coeffs_nuc=coeffs_nuc,
-        centroid_nuc=centroid_nuc,
-        nisos=nisos,
-        images_to_probe=images_to_probe,
+        coeffs_mem = coeffs_mem,
+        centroid_mem = centroid_mem,
+        coeffs_nuc = coeffs_nuc,
+        centroid_nuc = centroid_nuc,
+        nisos = nisos,
+        images_to_probe = images_to_probe,
     )
 
     return representations
 
-def get_interpolators(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos):
+def get_interpolators(
+    coeffs_mem: Dict,
+    centroid_mem: Dict,
+    coeffs_nuc: Dict,
+    centroid_nuc: Dict,
+    nisos: List
+):
     
     """
     Creates 1D interpolators for SHE coefficients with fixed points
@@ -151,6 +162,10 @@ def get_interpolators(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos)
         centroids_interpolator: spinterp.interp1d
         lmax: int
     """
+
+    if len(coeffs_mem) != len(coeffs_nuc):
+        raise ErrorValue(f"Number of cell and nuclear coefficients do not\
+        match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
     
     # Total number of coefficients
     nc = len(coeffs_mem)
@@ -190,7 +205,13 @@ def get_interpolators(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos)
 
     return coeffs_interpolator, centroids_interpolator, lmax
     
-def get_mapping_coordinates(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos):
+def get_mapping_coordinates(
+    coeffs_mem: Dict,
+    centroid_mem: List,
+    coeffs_nuc: Dict,
+    centroid_nuc: List,
+    nisos: List
+):
     
     """
     Interpolate spherical harmonics coefficients representing the nuclear centroid,
@@ -219,6 +240,10 @@ def get_mapping_coordinates(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, 
         parameterized intensity representation generated with
         same parameters nisos and same SHE degree.
     """
+
+    if len(coeffs_mem) != len(coeffs_nuc):
+        raise ErrorValue(f"Number of cell and nuclear coefficients do not\
+        match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
     
     # Get interpolators
     coeffs_interpolator, centroids_interpolator, lmax = get_interpolators(
@@ -246,7 +271,14 @@ def get_mapping_coordinates(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, 
         
     return coords
 
-def run_cellular_mapping(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nisos, images_to_probe=None):
+def cellular_mapping(
+    coeffs_mem: Dict,
+    centroid_mem: List,
+    coeffs_nuc: Dict,
+    centroid_nuc: List,
+    nisos: List,
+    images_to_probe: Optional[List] = None
+):
 
     """
     Interpolate spherical harmonics coefficients representing the nuclear centroid,
@@ -282,48 +314,11 @@ def run_cellular_mapping(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nis
         representation. C corresponds to the number of probed images.
     """
 
-    '''
-    # Total number of coefficients
-    nc = len(coeffs_mem)
-    # Degree of the expansion (lmax)
-    lmax = int(np.sqrt(nc / 2.0) - 1)
+    if len(coeffs_mem) != len(coeffs_nuc):
+        raise ErrorValue(f"Number of cell and nuclear coefficients do not\
+        match: {len(coeffs_mem)} and {len(coeffs_nuc)}.")
 
-    if nc != len(coeffs_nuc):
-        raise ValueError(
-            "Number of coefficients in mem_coeffs and nuc_coeffs are "
-            f"different: {nc,len(coeffs_nuc)}"
-        )
-
-    # Concatenate centroid into same array for interpolation
-    centroids = np.c_[centroid_nuc, centroid_nuc, centroid_mem]
-
-    # Array to be interpolated
-    coeffs_ctr_arr = np.array([0 if i else 1 for i in range(nc)])
-    coeffs_mem_arr = np.zeros((2, lmax + 1, lmax + 1))
-    coeffs_nuc_arr = np.zeros((2, lmax + 1, lmax + 1))
-    # Populate cell and nuclear arrays and concatenate into a single arr
-    for k, kname in enumerate(["C", "S"]):
-        for ll in range(lmax + 1):
-            for m in range(lmax + 1):
-                coeffs_mem_arr[k, ll, m] = coeffs_mem[f"L{ll}M{m}{kname}"]
-                coeffs_nuc_arr[k, ll, m] = coeffs_nuc[f"L{ll}M{m}{kname}"]
-    coeffs_mem_arr = coeffs_mem_arr.flatten()
-    coeffs_nuc_arr = coeffs_nuc_arr.flatten()
-    coeffs = np.c_[coeffs_ctr_arr, coeffs_nuc_arr, coeffs_mem_arr]
-
-    # Calculate fixed points for interpolation
-    iso_values = [0.0] + nisos
-    iso_values = np.cumsum(iso_values)
-    iso_values = iso_values / iso_values[-1]
-
-    # Coeffs interpolator
-    coeffs_interpolator = spinterp.interp1d(iso_values, coeffs)
-
-    # Centroid interpolator
-    centroids_interpolator = spinterp.interp1d(iso_values, centroids)
-    
-    '''
-    
+    # Get interpolators
     coeffs_interpolator, centroids_interpolator = get_interpolators(
         coeffs_mem = coeffs_mem,
         centroid_mem = centroid_mem,
@@ -374,7 +369,10 @@ def run_cellular_mapping(coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc, nis
     return code
 
 
-def get_intensity_representation(polydata, images_to_probe):
+def get_intensity_representation(
+    polydata: vtk.vtkPolyData,
+    images_to_probe: List
+):
 
     """
     This function probes the location of 3D mesh points in a list
@@ -412,10 +410,10 @@ def get_intensity_representation(polydata, images_to_probe):
     return representation
 
 def voxelize_mesh(
-    imagedata,
-    shape,
-    mesh,
-    origin
+    imagedata: vtk.vtkImageData,
+    shape: Tuple,
+    mesh: vtk.vtkPolyData,
+    origin: List
 ):
 
     """
@@ -458,7 +456,9 @@ def voxelize_mesh(
 
     return img
 
-def voxelize_meshes(meshes):
+def voxelize_meshes(
+    meshes: List
+):
 
     """
     List of meshes to be voxelized into an image. Usually
@@ -527,7 +527,11 @@ def voxelize_meshes(meshes):
     
     return img, origin
 
-def morph_representation_on_shape(img, param_img_coords, representation):
+def morph_representation_on_shape(
+    img: np.array,
+    param_img_coords: np.array,
+    representation: np.array
+):
     
     """
     Decodes the parameterized intensity representation
@@ -554,7 +558,13 @@ def morph_representation_on_shape(img, param_img_coords, representation):
         3D image where voxels have their values interpolated
         from the decoded representation
     """
-    
+
+    if param_img_coords.shape[1:] != representation.shape:
+        raise ErrorValue(f"Parameterized image coordinates of\
+        shape {param_img_coords.shape} and representation of\
+        shape {representation.shape} are expected to have the\
+        same shape.")
+
     # Reshape coords from 3NM to 3P, where N is the number of
     # isovalues in the representation and M is the number of
     # points in each mesh used to create the representation.
@@ -572,72 +582,3 @@ def morph_representation_on_shape(img, param_img_coords, representation):
     img[cell] = nninterpolator(cell)
 
     return img
-
-def evaluate_reconstruction(seg_nuc, seg_mem, image_to_probe, array_name):
-
-    """
-    TBD
-    """
-    
-    # Run parameterization
-    meshes, traces = parametrize(
-        seg_mem=seg_mem, seg_nuc=seg_nuc, images_to_probe=[(image_to_probe, array_name)]
-    )
-
-    # Create projections (top view is right above the nucleus)
-    z, y, _ = np.where(seg_nuc)
-    zs = 1 + int(z.max())
-    ys = int(y.mean())
-    image_to_probe[seg_mem == 0] = 0
-
-    projs = np.array(
-        [
-            np.vstack([seg_mem[zs], seg_mem[:, ys][::-1]]),
-            np.vstack([seg_nuc[zs], seg_nuc[:, ys][::-1]]),
-            np.vstack([image_to_probe[zs], image_to_probe[:, ys][::-1]]),
-            np.vstack([seg_mem.max(axis=0), seg_mem.max(axis=1)[::-1]]),
-            np.vstack([seg_nuc.max(axis=0), seg_nuc.max(axis=1)[::-1]]),
-            np.vstack([image_to_probe.max(axis=0), image_to_probe.max(axis=1)[::-1]]),
-        ]
-    )
-
-    # Voxelize result
-    trc_coords = vtk_to_numpy(traces.GetPoints().GetData())
-    trc_scalar = vtk_to_numpy(traces.GetPointData().GetArray(array_name))
-    field = np.zeros(seg_mem.shape, dtype=np.float32)
-    field[
-        trc_coords[:, 2].astype(np.int),
-        trc_coords[:, 1].astype(np.int),
-        trc_coords[:, 0].astype(np.int),
-    ] = trc_scalar
-    field[seg_mem == 0] = 0
-
-    # Fit
-    nninterpolator = spinterp.NearestNDInterpolator(
-        trc_coords[:, [2, 1, 0]], trc_scalar
-    )
-
-    # Interpolate
-    cytopts = np.where(seg_mem)
-    field_interp = field.copy()
-    field_interp[cytopts] = nninterpolator(cytopts)
-
-    # Projection of reconstructions
-    projs_rec = np.array(
-        [
-            np.vstack([seg_mem[zs], seg_mem[:, ys][::-1]]),
-            np.vstack([seg_nuc[zs], seg_nuc[:, ys][::-1]]),
-            np.vstack([field[zs], field[:, ys][::-1]]),
-            np.vstack([field_interp[zs], field_interp[:, ys][::-1]]),
-            np.vstack([seg_mem.max(axis=0), seg_mem.max(axis=1)[::-1]]),
-            np.vstack([seg_nuc.max(axis=0), seg_nuc.max(axis=1)[::-1]]),
-            np.vstack([field.max(axis=0), field.max(axis=1)[::-1]]),
-            np.vstack([field_interp.max(axis=0), field_interp.max(axis=1)[::-1]]),
-        ]
-    )
-
-    # Pearson correlation between original and reconstruction
-    valids = np.where(seg_mem)
-    pcorr = np.corrcoef(image_to_probe[valids], field_interp[valids])[0, 1]
-
-    return meshes, traces, (projs, projs_rec), pcorr

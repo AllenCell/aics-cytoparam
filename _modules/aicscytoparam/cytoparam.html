@@ -187,7 +187,7 @@
 <span class="kn">from</span> <span class="nn">aicsshparam</span> <span class="kn">import</span> <span class="n">shparam</span><span class="p">,</span> <span class="n">shtools</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span> <span class="k">as</span> <span class="n">spinterp</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">from</span> <span class="nn">vtk.util.numpy_support</span> <span class="kn">import</span> <span class="n">vtk_to_numpy</span>
+<span class="kn">from</span> <span class="nn">vtk.util.numpy_support</span> <span class="kn">import</span> <span class="n">vtk_to_numpy</span><span class="p">,</span> <span class="n">numpy_to_vtk</span>
 
 <div class="viewcode-block" id="parameterize_image_coordinates"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.parameterize_image_coordinates">[docs]</a><span class="k">def</span> <span class="nf">parameterize_image_coordinates</span><span class="p">(</span>
     <span class="n">seg_mem</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
@@ -218,6 +218,14 @@
 <span class="sd">        Array of shape 3xNxM, where NxM is the size of a</span>
 <span class="sd">        parameterized intensity representation generated with</span>
 <span class="sd">        same parameters lmax and nisos.</span>
+<span class="sd">    coeffs_mem: dict</span>
+<span class="sd">        Spherical harmonics coefficients that represent cell shape.</span>
+<span class="sd">    centroid_mem: tuple</span>
+<span class="sd">        (x,y,z) representing cell centroid.</span>
+<span class="sd">    coeffs_nuc: dict</span>
+<span class="sd">        Spherical harmonics coefficients that represent nuclear shape.</span>
+<span class="sd">    centroid_nuc: tuple</span>
+<span class="sd">        (x,y,z) representing nuclear centroid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="n">seg_mem</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">seg_nuc</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">):</span>
@@ -253,7 +261,7 @@
     <span class="c1"># segmentations</span>
     <span class="n">coords</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">centroid_mem</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     
-    <span class="k">return</span> <span class="n">coords</span></div>
+    <span class="k">return</span> <span class="n">coords</span><span class="p">,</span> <span class="p">(</span><span class="n">coeffs_mem</span><span class="p">,</span> <span class="n">centroid_mem</span><span class="p">,</span> <span class="n">coeffs_nuc</span><span class="p">,</span> <span class="n">centroid_nuc</span><span class="p">)</span></div>
     
 <div class="viewcode-block" id="parameterization_from_shcoeffs"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.parameterization_from_shcoeffs">[docs]</a><span class="k">def</span> <span class="nf">parameterization_from_shcoeffs</span><span class="p">(</span>
     <span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -300,7 +308,7 @@
         <span class="k">raise</span> <span class="n">ErrorValue</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of cell and nuclear coefficients do not</span><span class="se">\</span>
 <span class="s2">        match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     
-    <span class="n">representations</span> <span class="o">=</span> <span class="n">run_cellular_mapping</span><span class="p">(</span>
+    <span class="n">representations</span> <span class="o">=</span> <span class="n">cellular_mapping</span><span class="p">(</span>
         <span class="n">coeffs_mem</span> <span class="o">=</span> <span class="n">coeffs_mem</span><span class="p">,</span>
         <span class="n">centroid_mem</span> <span class="o">=</span> <span class="n">centroid_mem</span><span class="p">,</span>
         <span class="n">coeffs_nuc</span> <span class="o">=</span> <span class="n">coeffs_nuc</span><span class="p">,</span>
@@ -501,7 +509,7 @@
 <span class="s2">        match: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_mem</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_nuc</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Get interpolators</span>
-    <span class="n">coeffs_interpolator</span><span class="p">,</span> <span class="n">centroids_interpolator</span> <span class="o">=</span> <span class="n">get_interpolators</span><span class="p">(</span>
+    <span class="n">coeffs_interpolator</span><span class="p">,</span> <span class="n">centroids_interpolator</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">=</span> <span class="n">get_interpolators</span><span class="p">(</span>
         <span class="n">coeffs_mem</span> <span class="o">=</span> <span class="n">coeffs_mem</span><span class="p">,</span>
         <span class="n">centroid_mem</span> <span class="o">=</span> <span class="n">centroid_mem</span><span class="p">,</span>
         <span class="n">coeffs_nuc</span> <span class="o">=</span> <span class="n">coeffs_nuc</span><span class="p">,</span>
@@ -518,8 +526,10 @@
 
         <span class="c1"># Translate mesh to interpolated location</span>
         <span class="n">centroid</span> <span class="o">=</span> <span class="n">centroids_interpolator</span><span class="p">(</span><span class="n">iso_value</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">mesh</span> <span class="o">=</span> <span class="n">translate_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span>
-
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">vtk_to_numpy</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">GetPoints</span><span class="p">()</span><span class="o">.</span><span class="n">GetData</span><span class="p">())</span>
+        <span class="n">coords</span> <span class="o">+=</span> <span class="n">centroid</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">GetPoints</span><span class="p">()</span><span class="o">.</span><span class="n">SetData</span><span class="p">(</span><span class="n">numpy_to_vtk</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
+        
         <span class="c1"># Probe images of interest to create representation</span>
         <span class="n">rep</span> <span class="o">=</span> <span class="n">get_intensity_representation</span><span class="p">(</span>
             <span class="n">polydata</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="n">images_to_probe</span><span class="o">=</span><span class="n">images_to_probe</span>
@@ -549,7 +559,6 @@
     <span class="n">code</span><span class="o">.</span><span class="n">channel_names</span> <span class="o">=</span> <span class="n">ch_names</span>
 
     <span class="k">return</span> <span class="n">code</span></div>
-
 
 <div class="viewcode-block" id="get_intensity_representation"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">[docs]</a><span class="k">def</span> <span class="nf">get_intensity_representation</span><span class="p">(</span>
     <span class="n">polydata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span>

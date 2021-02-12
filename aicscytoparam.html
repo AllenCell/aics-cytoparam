@@ -407,12 +407,16 @@ parameterize the nucleoplasm and cytoplasm.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>coords</strong> – Array of shape 3xNxM, where NxM is the size of a
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coords</strong> (<em>np.array</em>) – Array of shape 3xNxM, where NxM is the size of a
 parameterized intensity representation generated with
-same parameters lmax and nisos.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.array</p>
+same parameters lmax and nisos.</p></li>
+<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
+<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid.</p></li>
+<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
+<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

@@ -208,8 +208,15 @@
 <div class="section" id="how-to-use">
 <h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
 <p>Here you have an example of how to use <code class="docutils literal notranslate"><span class="pre">aicscytoparam</span></code> to cretae a parameterization of a 3D cell. In this case the 3D cells will be represented by a cell segementation, nuclear segmentation a FP image representing the fluorescent signal of a tagged protein.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import required packages</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">aicscytoparam</span> <span class="kn">import</span> <span class="n">cytoparam</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">morphology</span> <span class="k">as</span> <span class="n">skmorpho</span>
+</pre></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First create a cuboid cell with a not centered cuboid nucleus</span>
-<span class="c1"># and get their SHE coefficients</span>
+<span class="c1"># and get their spherical harmonics coefficients</span>
 <span class="n">w</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">mem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="n">mem</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">80</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span><span class="mi">80</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span><span class="mi">80</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -229,7 +236,72 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For full package documentation please visit <a class="reference external" href="https://AllenCell.github.io/aics-cytoparam">AllenCell.github.io/aics-cytoparam</a>.</p>
+<a class="reference external image-reference" href="docs/im1.jpg"><img alt="Cuboid cell" src="docs/im1.jpg" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use aicsshparam to expand both cell and nuclear shapes in terms of spherical</span>
+<span class="c1"># harmonics</span>
+<span class="n">coords</span><span class="p">,</span> <span class="n">coeffs_centroid</span> <span class="o">=</span> <span class="n">cytoparam</span><span class="o">.</span><span class="n">parameterize_image_coordinates</span><span class="p">(</span>
+    <span class="n">seg_mem</span> <span class="o">=</span> <span class="n">mem</span><span class="p">,</span>
+    <span class="n">seg_nuc</span> <span class="o">=</span> <span class="n">nuc</span><span class="p">,</span>
+    <span class="n">lmax</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="c1"># Degree of the spherical harmonics expansion</span>
+    <span class="n">nisos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">]</span> <span class="c1"># Number of interpolation layers</span>
+<span class="p">)</span>
+<span class="n">coeffs_mem</span><span class="p">,</span> <span class="n">centroid_mem</span><span class="p">,</span> <span class="n">coeffs_nuc</span><span class="p">,</span> <span class="n">centroid_nuc</span> <span class="o">=</span> <span class="n">coeffs_centroid</span>
+
+<span class="c1"># Run the cellular mapping to create a parameterized intensity representation</span>
+<span class="c1"># for the FP image</span>
+<span class="n">gfp_representation</span> <span class="o">=</span> <span class="n">cytoparam</span><span class="o">.</span><span class="n">cellular_mapping</span><span class="p">(</span>
+    <span class="n">coeffs_mem</span> <span class="o">=</span> <span class="n">coeffs_mem</span><span class="p">,</span>
+    <span class="n">centroid_mem</span> <span class="o">=</span> <span class="n">centroid_mem</span><span class="p">,</span>
+    <span class="n">coeffs_nuc</span> <span class="o">=</span> <span class="n">coeffs_nuc</span><span class="p">,</span>
+    <span class="n">centroid_nuc</span> <span class="o">=</span> <span class="n">centroid_nuc</span><span class="p">,</span>
+    <span class="n">nisos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">],</span>
+    <span class="n">images_to_probe</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;gfp&#39;</span><span class="p">,</span> <span class="n">gfp</span><span class="p">)]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="c1"># The gfp image is now encoded into a representation of shape:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gfp_representation</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">(65,</span> <span class="pre">8194)</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Image now we want to morph the GFP image into a round cell.</span>
+<span class="c1"># First let&#39;s create the round cell.</span>
+
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">morphology</span> <span class="k">as</span> <span class="n">skmorpho</span>
+<span class="n">mem_round</span> <span class="o">=</span> <span class="n">skmorpho</span><span class="o">.</span><span class="n">ball</span><span class="p">(</span><span class="n">w</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># radius of our round cell</span>
+<span class="n">nuc_round</span> <span class="o">=</span> <span class="n">skmorpho</span><span class="o">.</span><span class="n">ball</span><span class="p">(</span><span class="n">w</span><span class="o">//</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># radius of our round nucleus</span>
+<span class="c1"># Erode the nucleus so it becomes smaller than the cell</span>
+<span class="n">nuc_round</span> <span class="o">=</span> <span class="n">skmorpho</span><span class="o">.</span><span class="n">binary_erosion</span><span class="p">(</span>
+    <span class="n">nuc_round</span><span class="p">,</span> <span class="n">selem</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="c1"># Vizualize a center cross section of our round cell</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">mem_round</span><span class="o">+</span><span class="n">nuc_round</span><span class="p">)[</span><span class="n">w</span><span class="o">//</span><span class="mi">3</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference external image-reference" href="docs/im2.jpg"><img alt="Cuboid cell" src="docs/im2.jpg" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First we need to parameterize the coordinates of our round</span>
+<span class="c1"># cell:</span>
+<span class="n">coords_round</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cytoparam</span><span class="o">.</span><span class="n">parameterize_image_coordinates</span><span class="p">(</span>
+    <span class="n">seg_mem</span> <span class="o">=</span> <span class="n">mem_round</span><span class="p">,</span>
+    <span class="n">seg_nuc</span> <span class="o">=</span> <span class="n">nuc_round</span><span class="p">,</span>
+    <span class="n">lmax</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">nisos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Now we are ready to morph the GFP image into our round cell</span>
+<span class="n">gfp_morphed</span> <span class="o">=</span> <span class="n">cytoparam</span><span class="o">.</span><span class="n">morph_representation_on_shape</span><span class="p">(</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">mem_round</span><span class="o">+</span><span class="n">nuc_round</span><span class="p">,</span>
+    <span class="n">param_img_coords</span> <span class="o">=</span> <span class="n">coords_round</span><span class="p">,</span>
+    <span class="n">representation</span> <span class="o">=</span> <span class="n">gfp_representation</span>
+<span class="p">)</span>
+<span class="c1"># Visualize the morphed gfp image</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">mem_round</span><span class="o">+</span><span class="n">nuc_round</span><span class="p">)[</span><span class="n">w</span><span class="o">//</span><span class="mi">3</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gfp_morphed</span><span class="p">[</span><span class="n">w</span><span class="o">//</span><span class="mi">3</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference external image-reference" href="docs/im3.jpg"><img alt="Cuboid cell" src="docs/im3.jpg" /></a>
 </div>
 <div class="section" id="development">
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>

@@ -42,7 +42,7 @@ gfp[mem==0] = 0
 gfp[:,w//2:] = 0
 gfp[nuc>0] = 0
 
-# Vizualize a center cross section of our cell
+# Vizualize a center xy cross-section of our cell
 plt.imshow((mem+nuc)[w//2], cmap='gray')
 plt.imshow(gfp[w//2], cmap='gray', alpha=0.25)
 plt.axis('off')

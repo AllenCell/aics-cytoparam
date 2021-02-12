@@ -123,7 +123,7 @@ plt.axis('off')
 
 ## Reference
 
-For an example of how this package was used to analyse a dataset of over 200k single-cell images at the Allen Institute for Cell Science, please check out our paper at [bioaRxiv](https://www.biorxiv.org/content/10.1101/2020.12.08.415562v1).
+For an example of how this package was used to analyse a dataset of over 200k single-cell images at the Allen Institute for Cell Science, please check out our paper in [bioaRxiv](https://www.biorxiv.org/content/10.1101/2020.12.08.415562v1).
 
 ## Development
 

@@ -1,10 +1,10 @@
-# Cytoplasm Parameterization
+# 3D Cell Parameterization
 
 [![Build Status](https://github.com/AllenCell/aics-cytoparam/workflows/Build%20Main/badge.svg)](https://github.com/AllenCell/aics-cytoparam/actions)
 [![Documentation](https://github.com/AllenCell/aics-cytoparam/workflows/Documentation/badge.svg)](https://AllenCell.github.io/aics-cytoparam/)
 [![Code Coverage](https://codecov.io/gh/AllenCell/aics-cytoparam/branch/main/graph/badge.svg)](https://codecov.io/gh/AllenCell/aics-cytoparam)
 
-### Spherical harmonics expansion coefficients-based parameterization of the cytoplasm and nucleoplasm for 3D cells
+### Spherical harmonics coefficients-based parameterization of the cytoplasm and nucleoplasm for 3D cells
 
 ![Cuboid cell](docs/logo.jpg)
 

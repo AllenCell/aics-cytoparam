@@ -213,185 +213,8 @@
 <div class="section" id="module-aicscytoparam.cytoparam">
 <span id="aicscytoparam-cytoparam-module"></span><h2>aicscytoparam.cytoparam module<a class="headerlink" href="#module-aicscytoparam.cytoparam" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="aicscytoparam.cytoparam.evaluate_reconstruction">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">evaluate_reconstruction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seg_nuc</span></em>, <em class="sig-param"><span class="n">seg_mem</span></em>, <em class="sig-param"><span class="n">image_to_probe</span></em>, <em class="sig-param"><span class="n">array_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#evaluate_reconstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.evaluate_reconstruction" title="Permalink to this definition">¶</a></dt>
-<dd><p>TBD</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.get_intensity_representation">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">get_intensity_representation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">polydata</span></em>, <em class="sig-param"><span class="n">images_to_probe</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_intensity_representation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_intensity_representation" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function probes the location of 3D mesh points in a list
-of 3D images.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>polydata</strong> (<em>vtkPolyData</em>) – Polygonal 3D mesh</p></li>
-<li><p><strong>images_to_probe</strong> (<em>list of tuples</em>) – [(a, b)] where a’s are names for the image to be probed and b’s are
-expected to be 3D ndarrays representing the image to be probed. The
-images are assumed to be previously registered to the cell and
-nuclear images used to calculate the spherical harmonics
-coefficients.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>result</strong> – [(a,b)] where a is the probed image name and b is a 1d array with
-the corresponding probed intensities.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of ndarrays</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.get_interpolators">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">get_interpolators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span></em>, <em class="sig-param"><span class="n">centroid_mem</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span></em>, <em class="sig-param"><span class="n">nisos</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_interpolators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_interpolators" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates 1D interpolators for SHE coefficients with fixed points
-at: 1) nuclear centroid, 2) nuclear shell and 3) cell membrane.
-Also creates an interpolator for corresponding centroids.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
-<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid</p></li>
-<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
-<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid</p></li>
-<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
-parameterize the nucleoplasm and cytoplasm.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>coeffs_interpolator</strong> (<em>spinterp.interp1d</em>)</p></li>
-<li><p><strong>centroids_interpolator</strong> (<em>spinterp.interp1d</em>)</p></li>
-<li><p><strong>lmax</strong> (<em>int</em>)</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.get_mapping_coordinates">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">get_mapping_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span></em>, <em class="sig-param"><span class="n">centroid_mem</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span></em>, <em class="sig-param"><span class="n">nisos</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_mapping_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_mapping_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interpolate spherical harmonics coefficients representing the nuclear centroid,
-the nuclear shell and the cell membrane. As the coefficients are interpolated,
-polygonal meshes representing corresponding 3D shapes are reconstructed and
-the coordinates of their points are returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
-<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid</p></li>
-<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
-<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid</p></li>
-<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
-parameterize the nucleoplasm and cytoplasm.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>coords</strong> – Array of shape 3xNxM, where NxM is the size of a
-parameterized intensity representation generated with
-same parameters nisos and same SHE degree.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.morph_representation_on_shape">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">morph_representation_on_shape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span></em>, <em class="sig-param"><span class="n">param_img_coords</span></em>, <em class="sig-param"><span class="n">representation</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#morph_representation_on_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.morph_representation_on_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes the parameterized intensity representation
-into an image. To do so, an input image with the final
-shape is required.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>img</strong> (<em>np.array</em>) – 3D binary image with the shape in which the
-representation will be decoded on.</p></li>
-<li><p><strong>img_param_coords</strong> (<em>np.array</em>) – Array of shape 3NM, where N is the number of</p></li>
-<li><p><strong>isovalues in the representation and M is the number of</strong></p></li>
-<li><p><strong>points in each mesh used to create the representation.</strong></p></li>
-<li><p><strong>This array should be generated by the function</strong></p></li>
-<li><p><strong>param_img_coords.</strong></p></li>
-<li><p><strong>representation</strong> (<em>np.array</em>) – Array of shape NM as generated by the function
-run_cellular_mapping.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>img</strong> – 3D image where voxels have their values interpolated
-from the decoded representation</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.parameterization_from_shcoeffs">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">parameterization_from_shcoeffs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span></em>, <em class="sig-param"><span class="n">centroid_mem</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="o">=</span><span class="default_value">[32, 32]</span></em>, <em class="sig-param"><span class="n">images_to_probe</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#parameterization_from_shcoeffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.parameterization_from_shcoeffs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs the parameterization for a cell represented by its spherical
-harmonics coefficients calculated by using ther package aics-shparam.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
-<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid</p></li>
-<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
-<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid</p></li>
-<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
-parameterize the nucleoplasm and cytoplasm.</p></li>
-<li><p><strong>images_to_probe</strong> (<em>list of tuples</em>) – [(a, b)] where a’s are names for the image to be probed and b’s are
-expected to be 3D ndarrays representing the image to be probed. The
-images are assumed to be previously registered to the cell and
-nuclear images used to calculate the spherical harmonics
-coefficients.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>result</strong> – Multidimensional image of shape 11C1YX, where Y is the number of
-interpolation levels and X is the number of points in the
-representation. C corresponds to the number of probed images.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>AICSImage</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.parameterize_image_coordinates">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">parameterize_image_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seg_mem</span></em>, <em class="sig-param"><span class="n">seg_nuc</span></em>, <em class="sig-param"><span class="n">lmax</span><span class="o">=</span><span class="default_value">16</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="o">=</span><span class="default_value">[32, 32]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#parameterize_image_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.parameterize_image_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs the parameterization for a cell represented by its spherical
-harmonics coefficients calculated by using ther package aics-shparam.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>seg_mem</strong> (<em>np.array</em>) – 3D binary cell segmentation.</p></li>
-<li><p><strong>seg_nuc</strong> (<em>np.array</em>) – 3D binary nuclear segmentation.</p></li>
-<li><p><strong>lmax</strong> (<em>int</em>) – Degree of spherical harmonics expansiion.</p></li>
-<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
-parameterize the nucleoplasm and cytoplasm.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>coords</strong> – Array of shape 3xNxM, where NxM is the size of a
-parameterized intensity representation generated with
-same parameters lmax and nisos.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>np.array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="aicscytoparam.cytoparam.run_cellular_mapping">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">run_cellular_mapping</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span></em>, <em class="sig-param"><span class="n">centroid_mem</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span></em>, <em class="sig-param"><span class="n">nisos</span></em>, <em class="sig-param"><span class="n">images_to_probe</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#run_cellular_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.run_cellular_mapping" title="Permalink to this definition">¶</a></dt>
+<dt id="aicscytoparam.cytoparam.cellular_mapping">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">cellular_mapping</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">images_to_probe</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#cellular_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.cellular_mapping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate spherical harmonics coefficients representing the nuclear centroid,
 the nuclear shell and the cell membrane. As the coefficients are interpolated,
 polygonal meshes representing corresponding 3D shapes are reconstructed and used
@@ -424,8 +247,179 @@ representation. C corresponds to the number of probed images.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="aicscytoparam.cytoparam.get_intensity_representation">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">get_intensity_representation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">polydata</span><span class="p">:</span> <span class="n">vtkmodules.vtkCommonDataModel.vtkPolyData</span></em>, <em class="sig-param"><span class="n">images_to_probe</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_intensity_representation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_intensity_representation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function probes the location of 3D mesh points in a list
+of 3D images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polydata</strong> (<em>vtkPolyData</em>) – Polygonal 3D mesh</p></li>
+<li><p><strong>images_to_probe</strong> (<em>list of tuples</em>) – [(a, b)] where a’s are names for the image to be probed and b’s are
+expected to be 3D ndarrays representing the image to be probed. The
+images are assumed to be previously registered to the cell and
+nuclear images used to calculate the spherical harmonics
+coefficients.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – [(a,b)] where a is the probed image name and b is a 1d array with
+the corresponding probed intensities.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of ndarrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aicscytoparam.cytoparam.get_interpolators">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">get_interpolators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_mem</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_interpolators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_interpolators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates 1D interpolators for SHE coefficients with fixed points
+at: 1) nuclear centroid, 2) nuclear shell and 3) cell membrane.
+Also creates an interpolator for corresponding centroids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
+<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid</p></li>
+<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
+<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid</p></li>
+<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
+parameterize the nucleoplasm and cytoplasm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coeffs_interpolator</strong> (<em>spinterp.interp1d</em>)</p></li>
+<li><p><strong>centroids_interpolator</strong> (<em>spinterp.interp1d</em>)</p></li>
+<li><p><strong>lmax</strong> (<em>int</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aicscytoparam.cytoparam.get_mapping_coordinates">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">get_mapping_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_mapping_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_mapping_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate spherical harmonics coefficients representing the nuclear centroid,
+the nuclear shell and the cell membrane. As the coefficients are interpolated,
+polygonal meshes representing corresponding 3D shapes are reconstructed and
+the coordinates of their points are returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
+<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid</p></li>
+<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
+<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid</p></li>
+<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
+parameterize the nucleoplasm and cytoplasm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>coords</strong> – Array of shape 3xNxM, where NxM is the size of a
+parameterized intensity representation generated with
+same parameters nisos and same SHE degree.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aicscytoparam.cytoparam.morph_representation_on_shape">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">morph_representation_on_shape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">param_img_coords</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">representation</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#morph_representation_on_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.morph_representation_on_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes the parameterized intensity representation
+into an image. To do so, an input image with the final
+shape is required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>np.array</em>) – 3D binary image with the shape in which the
+representation will be decoded on.</p></li>
+<li><p><strong>img_param_coords</strong> (<em>np.array</em>) – Array of shape 3NM, where N is the number of</p></li>
+<li><p><strong>isovalues in the representation and M is the number of</strong></p></li>
+<li><p><strong>points in each mesh used to create the representation.</strong></p></li>
+<li><p><strong>This array should be generated by the function</strong></p></li>
+<li><p><strong>param_img_coords.</strong></p></li>
+<li><p><strong>representation</strong> (<em>np.array</em>) – Array of shape NM as generated by the function
+run_cellular_mapping.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>img</strong> – 3D image where voxels have their values interpolated
+from the decoded representation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aicscytoparam.cytoparam.parameterization_from_shcoeffs">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">parameterization_from_shcoeffs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="p">:</span> <span class="n">List</span></em>, <em class="sig-param"><span class="n">images_to_probe</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#parameterization_from_shcoeffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.parameterization_from_shcoeffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the parameterization for a cell represented by its spherical
+harmonics coefficients calculated by using ther package aics-shparam.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeffs_mem</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent cell shape.</p></li>
+<li><p><strong>centroid_mem</strong> (<em>tuple</em>) – (x,y,z) representing cell centroid</p></li>
+<li><p><strong>coeffs_nuc</strong> (<em>dict</em>) – Spherical harmonics coefficients that represent nuclear shape.</p></li>
+<li><p><strong>centroid_nuc</strong> (<em>tuple</em>) – (x,y,z) representing nuclear centroid</p></li>
+<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
+parameterize the nucleoplasm and cytoplasm.</p></li>
+<li><p><strong>images_to_probe</strong> (<em>list of tuples</em>) – [(a, b)] where a’s are names for the image to be probed and b’s are
+expected to be 3D ndarrays representing the image to be probed. The
+images are assumed to be previously registered to the cell and
+nuclear images used to calculate the spherical harmonics
+coefficients.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – Multidimensional image of shape 11C1YX, where Y is the number of
+interpolation levels and X is the number of points in the
+representation. C corresponds to the number of probed images.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>AICSImage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="aicscytoparam.cytoparam.parameterize_image_coordinates">
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">parameterize_image_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seg_mem</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">seg_nuc</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">lmax</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">nisos</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#parameterize_image_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.parameterize_image_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the parameterization for a cell represented by its spherical
+harmonics coefficients calculated by using ther package aics-shparam.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seg_mem</strong> (<em>np.array</em>) – 3D binary cell segmentation.</p></li>
+<li><p><strong>seg_nuc</strong> (<em>np.array</em>) – 3D binary nuclear segmentation.</p></li>
+<li><p><strong>lmax</strong> (<em>int</em>) – Degree of spherical harmonics expansiion.</p></li>
+<li><p><strong>nisos</strong> (<em>list</em>) – [a,b] representing the number of layers that will be used to
+parameterize the nucleoplasm and cytoplasm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>coords</strong> – Array of shape 3xNxM, where NxM is the size of a
+parameterized intensity representation generated with
+same parameters lmax and nisos.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="aicscytoparam.cytoparam.voxelize_mesh">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">voxelize_mesh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imagedata</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">mesh</span></em>, <em class="sig-param"><span class="n">origin</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_mesh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">voxelize_mesh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imagedata</span><span class="p">:</span> <span class="n">vtkmodules.vtkCommonDataModel.vtkImageData</span></em>, <em class="sig-param"><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span></em>, <em class="sig-param"><span class="n">mesh</span><span class="p">:</span> <span class="n">vtkmodules.vtkCommonDataModel.vtkPolyData</span></em>, <em class="sig-param"><span class="n">origin</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_mesh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Voxelize a triangle mesh into an image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -448,7 +442,7 @@ voxelization.</p></li>
 
 <dl class="py function">
 <dt id="aicscytoparam.cytoparam.voxelize_meshes">
-<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">voxelize_meshes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">meshes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_meshes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_meshes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">aicscytoparam.cytoparam.</code><code class="sig-name descname">voxelize_meshes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">meshes</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_meshes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_meshes" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of meshes to be voxelized into an image. Usually
 the input corresponds to the cell membrane and nuclear
 shell meshes.</p>

@@ -16,7 +16,7 @@
 
 ## How to use
 
-Here you have an example of how to use `aicscytoparam` to cretae a parameterization of a 3D cell. In this case the 3D cells will be represented by a cell segementation, nuclear segmentation a FP image representing the fluorescent signal of a tagged protein.
+Here we outline an example of how to use `aicscytoparam` to create a parameterization of a 3D cell. In this case, the 3D cells will be represented by a cell segementation, nuclear segmentation and a fluorescent protein (FP) image representing the fluorescent signal of a tagged protein.
 
 ```python
 # Import required packages
@@ -27,22 +27,22 @@ from skimage import morphology as skmorpho
 ```
 
 ```python
-# First create a cuboid cell with a not centered cuboid nucleus
-# and get their spherical harmonics coefficients
+# First create a cuboid cell with an off-center cuboid nucleus
+# and get the spherical harmonics coefficients of this cell and nucleus:
 w = 100
 mem = np.zeros((w, w, w), dtype = np.uint8)
 mem[20:80, 20:80, 20:80] = 1
 nuc = np.zeros((w, w, w), dtype = np.uint8)
 nuc[40:60, 40:60, 30:50] = 1
 
-# Create a FP signal located at the top half of the cell and outside the
-# nucleus.
+# Create an FP signal located in the top half of the cell and outside the
+# nucleus:
 gfp = np.random.rand(w**3).reshape(w,w,w)
 gfp[mem==0] = 0
 gfp[:,w//2:] = 0
 gfp[nuc>0] = 0
 
-# Vizualize a center xy cross-section of our cell
+# Vizualize a center xy cross-section of our cell:
 plt.imshow((mem+nuc)[w//2], cmap='gray')
 plt.imshow(gfp[w//2], cmap='gray', alpha=0.25)
 plt.axis('off')
@@ -52,7 +52,7 @@ plt.axis('off')
 
 ```python
 # Use aicsshparam to expand both cell and nuclear shapes in terms of spherical
-# harmonics
+# harmonics:
 coords, coeffs_centroid = cytoparam.parameterize_image_coordinates(
     seg_mem = mem,
     seg_nuc = nuc,
@@ -62,7 +62,7 @@ coords, coeffs_centroid = cytoparam.parameterize_image_coordinates(
 coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc = coeffs_centroid
 
 # Run the cellular mapping to create a parameterized intensity representation
-# for the FP image
+# for the FP image:
 gfp_representation = cytoparam.cellular_mapping(
     coeffs_mem = coeffs_mem,
     centroid_mem = centroid_mem,
@@ -72,15 +72,15 @@ gfp_representation = cytoparam.cellular_mapping(
     images_to_probe = [('gfp', gfp)]
 ).data.squeeze()
 
-# The gfp image is now encoded into a representation of shape:
+# The FP image is now encoded into a representation of its shape:
 print(gfp_representation.shape)
 ```
 
 `(65, 8194)`
 
 ```python
-# Image now we want to morph the GFP image into a round cell.
-# First let's create the round cell.
+# Now we want to morph the FP image into a round cell.
+# First we create the round cell:
 
 from skimage import morphology as skmorpho
 mem_round = skmorpho.ball(w//3) # radius of our round cell
@@ -90,7 +90,7 @@ nuc_round = skmorpho.binary_erosion(
     nuc_round, selem=np.ones((20,20,20))
     ).astype(np.uint8)
 
-# Vizualize a center cross section of our round cell
+# Vizualize a center xy cross-section of our round cell:
 plt.imshow((mem_round+nuc_round)[w//3], cmap='gray')
 plt.axis('off')
 ```
@@ -98,7 +98,7 @@ plt.axis('off')
 ![Cuboid cell](docs/im2.jpg)
 
 ```python
-# First we need to parameterize the coordinates of our round
+# Next we need to parameterize the coordinates of our round
 # cell:
 coords_round, _ = cytoparam.parameterize_image_coordinates(
     seg_mem = mem_round,
@@ -107,13 +107,13 @@ coords_round, _ = cytoparam.parameterize_image_coordinates(
     nisos = [32,32]
 )
 
-# Now we are ready to morph the GFP image into our round cell
+# Now we are ready to morph the FP image into our round cell:
 gfp_morphed = cytoparam.morph_representation_on_shape(
     img = mem_round+nuc_round,
     param_img_coords = coords_round,
     representation = gfp_representation
 )
-# Visualize the morphed gfp image
+# Visualize the morphed FP image:
 plt.imshow((mem_round+nuc_round)[w//3], cmap='gray')
 plt.imshow(gfp_morphed[w//3], cmap='gray', alpha=0.25)
 plt.axis('off')

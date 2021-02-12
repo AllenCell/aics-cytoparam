@@ -16,8 +16,16 @@ Spherical harmonics expansion coefficients-based parameterization of the cytopla
 Here you have an example of how to use `aicscytoparam` to cretae a parameterization of a 3D cell. In this case the 3D cells will be represented by a cell segementation, nuclear segmentation a FP image representing the fluorescent signal of a tagged protein.
 
 ```python
+# Import required packages
+import numpy as np
+import matplotlib.pyplot as plt
+from aicscytoparam import cytoparam
+from skimage import morphology as skmorpho
+```
+
+```python
 # First create a cuboid cell with a not centered cuboid nucleus
-# and get their SHE coefficients
+# and get their spherical harmonics coefficients
 w = 100
 mem = np.zeros((w, w, w), dtype = np.uint8)
 mem[20:80, 20:80, 20:80] = 1
@@ -37,7 +45,78 @@ plt.imshow(gfp[w//2], cmap='gray', alpha=0.25)
 plt.axis('off')
 ```
 
-For full package documentation please visit [AllenCell.github.io/aics-cytoparam](https://AllenCell.github.io/aics-cytoparam).
+![Cuboid cell](docs/im1.jpg)
+
+```python
+# Use aicsshparam to expand both cell and nuclear shapes in terms of spherical
+# harmonics
+coords, coeffs_centroid = cytoparam.parameterize_image_coordinates(
+    seg_mem = mem,
+    seg_nuc = nuc,
+    lmax = 16, # Degree of the spherical harmonics expansion
+    nisos = [32,32] # Number of interpolation layers
+)
+coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc = coeffs_centroid
+
+# Run the cellular mapping to create a parameterized intensity representation
+# for the FP image
+gfp_representation = cytoparam.cellular_mapping(
+    coeffs_mem = coeffs_mem,
+    centroid_mem = centroid_mem,
+    coeffs_nuc = coeffs_nuc,
+    centroid_nuc = centroid_nuc,
+    nisos = [32,32],
+    images_to_probe = [('gfp', gfp)]
+).data.squeeze()
+
+# The gfp image is now encoded into a representation of shape:
+print(gfp_representation.shape)
+```
+
+`(65, 8194)`
+
+```python
+# Image now we want to morph the GFP image into a round cell.
+# First let's create the round cell.
+
+from skimage import morphology as skmorpho
+mem_round = skmorpho.ball(w//3) # radius of our round cell
+nuc_round = skmorpho.ball(w//3) # radius of our round nucleus
+# Erode the nucleus so it becomes smaller than the cell
+nuc_round = skmorpho.binary_erosion(
+    nuc_round, selem=np.ones((20,20,20))
+    ).astype(np.uint8)
+
+# Vizualize a center cross section of our round cell
+plt.imshow((mem_round+nuc_round)[w//3], cmap='gray')
+plt.axis('off')
+```
+
+![Cuboid cell](docs/im2.jpg)
+
+```python
+# First we need to parameterize the coordinates of our round
+# cell:
+coords_round, _ = cytoparam.parameterize_image_coordinates(
+    seg_mem = mem_round,
+    seg_nuc = nuc_round,
+    lmax = 16,
+    nisos = [32,32]
+)
+
+# Now we are ready to morph the GFP image into our round cell
+gfp_morphed = cytoparam.morph_representation_on_shape(
+    img = mem_round+nuc_round,
+    param_img_coords = coords_round,
+    representation = gfp_representation
+)
+# Visualize the morphed gfp image
+plt.imshow((mem_round+nuc_round)[w//3], cmap='gray')
+plt.imshow(gfp_morphed[w//3], cmap='gray', alpha=0.25)
+plt.axis('off')
+```
+
+![Cuboid cell](docs/im3.jpg)
 
 ## Development
 

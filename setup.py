@@ -42,7 +42,7 @@ requirements = [
     "tqdm",
     "numpy",
     "vtk>=9.0.0",
-    "aicsimageio>=4.0.0",
+    "aicsimageio",
     "scipy",
     "scikit-image>=0.15.0"
 ]

@@ -71,7 +71,7 @@ def parameterize_image_coordinates(
 
     # Shift coordinates to the center of the input
     # segmentations
-    coords += np.array(centroid_mem).reshape(3, 1, 1)
+    # coords += np.array(centroid_mem).reshape(3, 1, 1)
 
     return coords, (coeffs_mem, centroid_mem, coeffs_nuc, centroid_nuc)
 
@@ -277,6 +277,9 @@ def get_mapping_coordinates(
 
         # Store coordinates
         coords = vtk_to_numpy(mesh.GetPoints().GetData())
+
+        coords += centroids_interpolator(iso_value).reshape(1, -1)
+
         x_coords.append(coords[:, 0])
         y_coords.append(coords[:, 1])
         z_coords.append(coords[:, 2])
@@ -376,14 +379,13 @@ def cellular_mapping(
         for ch, (ch_name, data) in enumerate(rep.items()):
             code[ch, 0, i, :] = data
 
-    # Convert array into TIFF
-    code = AICSImage(code)
-
     # Save channel names
     ch_names = []
     for ch_name, _ in representations[0].items():
         ch_names.append(ch_name)
-    code.channel_names = ch_names
+
+    # Convert array into TIFF
+    code = AICSImage(code, channel_names=ch_names)
 
     return code
 
@@ -422,7 +424,6 @@ def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: Lis
         y_clip = np.clip(y, 0, img.shape[1] - 1)
         z_clip = np.clip(z, 0, img.shape[0] - 1)
         representation[name] = img[z_clip, y_clip, x_clip]
-
     return representation
 
 

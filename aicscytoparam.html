@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aicscytoparam package &mdash; aics-cytoparam 0.1.4 documentation</title>
+  <title>aicscytoparam package &mdash; aics-cytoparam 0.1.5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> aics-cytoparam
           </a>
               <div class="version">
-                0.1.4
+                0.1.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -97,9 +98,9 @@
            <div itemprop="articleBody">
              
   <section id="aicscytoparam-package">
-<h1>aicscytoparam package<a class="headerlink" href="#aicscytoparam-package" title="Permalink to this headline"></a></h1>
+<h1>aicscytoparam package<a class="headerlink" href="#aicscytoparam-package" title="Permalink to this heading"></a></h1>
 <section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="aicscytoparam.bin.html">aicscytoparam.bin package</a><ul>
@@ -112,10 +113,10 @@
 </div>
 </section>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-aicscytoparam.cytoparam">
-<span id="aicscytoparam-cytoparam-module"></span><h2>aicscytoparam.cytoparam module<a class="headerlink" href="#module-aicscytoparam.cytoparam" title="Permalink to this headline"></a></h2>
+<span id="aicscytoparam-cytoparam-module"></span><h2>aicscytoparam.cytoparam module<a class="headerlink" href="#module-aicscytoparam.cytoparam" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="aicscytoparam.cytoparam.cellular_mapping">
 <span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">cellular_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeffs_mem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid_mem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeffs_nuc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroid_nuc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nisos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images_to_probe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#cellular_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.cellular_mapping" title="Permalink to this definition"></a></dt>
@@ -152,7 +153,7 @@ representation. C corresponds to the number of probed images.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aicscytoparam.cytoparam.get_intensity_representation">
-<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">get_intensity_representation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polydata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkmodules.vtkCommonDataModel.vtkPolyData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images_to_probe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_intensity_representation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_intensity_representation" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">get_intensity_representation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polydata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkPolyData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">images_to_probe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#get_intensity_representation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.get_intensity_representation" title="Permalink to this definition"></a></dt>
 <dd><p>This function probes the location of 3D mesh points in a list
 of 3D images.</p>
 <dl class="field-list simple">
@@ -235,7 +236,7 @@ same parameters nisos and same SHE degree.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aicscytoparam.cytoparam.morph_representation_on_shape">
-<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">morph_representation_on_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_img_coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#morph_representation_on_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.morph_representation_on_shape" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">morph_representation_on_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_img_coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#morph_representation_on_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.morph_representation_on_shape" title="Permalink to this definition"></a></dt>
 <dd><p>Decodes the parameterized intensity representation
 into an image. To do so, an input image with the final
 shape is required.</p>
@@ -297,7 +298,7 @@ representation. C corresponds to the number of probed images.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aicscytoparam.cytoparam.parameterize_image_coordinates">
-<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">parameterize_image_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seg_mem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_nuc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nisos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#parameterize_image_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.parameterize_image_coordinates" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">parameterize_image_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seg_mem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_nuc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nisos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#parameterize_image_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.parameterize_image_coordinates" title="Permalink to this definition"></a></dt>
 <dd><p>Runs the parameterization for a cell represented by its spherical
 harmonics coefficients calculated by using ther package aics-shparam.</p>
 <dl class="field-list simple">
@@ -327,7 +328,7 @@ same parameters lmax and nisos.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="aicscytoparam.cytoparam.voxelize_mesh">
-<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">voxelize_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imagedata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkmodules.vtkCommonDataModel.vtkImageData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkmodules.vtkCommonDataModel.vtkPolyData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_mesh" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">voxelize_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imagedata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkImageData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkPolyData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_mesh" title="Permalink to this definition"></a></dt>
 <dd><p>Voxelize a triangle mesh into an image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -375,7 +376,7 @@ value of the right most mesh in the list.</p></li>
 
 </section>
 <section id="module-aicscytoparam">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aicscytoparam" title="Permalink to this headline"></a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aicscytoparam" title="Permalink to this heading"></a></h2>
 <p>Top-level package for aics-cytoparam.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="aicscytoparam.get_module_version">

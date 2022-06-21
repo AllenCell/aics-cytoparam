@@ -569,7 +569,7 @@ def morph_representation_on_shape(
         from the decoded representation
     """
 
-    if param_img_coords.shape[1:] != representation.shape:
+    if param_img_coords.shape[-2:] != representation.shape[-2:]:
         raise ValueError(
             f"Parameterized image coordinates of\
         shape {param_img_coords.shape} and representation of\

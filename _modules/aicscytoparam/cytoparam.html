@@ -663,7 +663,7 @@
 <span class="sd">        from the decoded representation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">param_img_coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">representation</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">param_img_coords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">representation</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Parameterized image coordinates of</span><span class="se">\</span>
 <span class="s2">        shape </span><span class="si">{</span><span class="n">param_img_coords</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and representation of</span><span class="se">\</span>

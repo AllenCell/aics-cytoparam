@@ -416,7 +416,7 @@ def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: Lis
 
     representation = {}
     coords = vtk_to_numpy(polydata.GetPoints().GetData())
-    x, y, z = [coords[:, i].astype(np.int) for i in range(3)]
+    x, y, z = [coords[:, i].astype(int) for i in range(3)]
     for name, img in images_to_probe:
         # Bound the values of x, y and z coordinates to fit inside the
         # probe image
@@ -504,8 +504,8 @@ def voxelize_meshes(meshes: List):
     coords = vtk_to_numpy(mesh.GetPoints().GetData())
 
     # Find bounds of the mesh
-    rmin = (coords.min(axis=0) - 0.5).astype(np.int)
-    rmax = (coords.max(axis=0) + 0.5).astype(np.int)
+    rmin = (coords.min(axis=0) - 0.5).astype(int)
+    rmax = (coords.max(axis=0) + 0.5).astype(int)
 
     # Width, height and depth
     w = int(2 + (rmax[0] - rmin[0]))

@@ -11,7 +11,6 @@ from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 def parameterize_image_coordinates(
     seg_mem: np.array, seg_nuc: np.array, lmax: int, nisos: List
 ):
-
     """
     Runs the parameterization for a cell represented by its spherical
     harmonics coefficients calculated by using ther package aics-shparam.
@@ -84,7 +83,6 @@ def parameterization_from_shcoeffs(
     nisos: List,
     images_to_probe: Optional[List] = None,
 ):
-
     """
     Runs the parameterization for a cell represented by its spherical
     harmonics coefficients calculated by using ther package aics-shparam.
@@ -142,7 +140,6 @@ def get_interpolators(
     centroid_nuc: Dict,
     nisos: List,
 ):
-
     """
     Creates 1D interpolators for SHE coefficients with fixed points
     at: 1) nuclear centroid, 2) nuclear shell and 3) cell membrane.
@@ -224,7 +221,6 @@ def get_mapping_coordinates(
     centroid_nuc: List,
     nisos: List,
 ):
-
     """
     Interpolate spherical harmonics coefficients representing the nuclear centroid,
     the nuclear shell and the cell membrane. As the coefficients are interpolated,
@@ -270,7 +266,6 @@ def get_mapping_coordinates(
 
     x_coords, y_coords, z_coords = [], [], []
     for i, iso_value in enumerate(np.linspace(0.0, 1.0, 1 + np.sum(nisos))):
-
         # Get coeffs at given fixed point
         coeffs = coeffs_interpolator(iso_value).reshape(2, lmax + 1, lmax + 1)
         mesh, _ = shtools.get_reconstruction_from_coeffs(coeffs, lrec=2 * lmax)
@@ -297,7 +292,6 @@ def cellular_mapping(
     nisos: List,
     images_to_probe: Optional[List] = None,
 ):
-
     """
     Interpolate spherical harmonics coefficients representing the nuclear centroid,
     the nuclear shell and the cell membrane. As the coefficients are interpolated,
@@ -349,7 +343,6 @@ def cellular_mapping(
 
     representations = []
     for i, iso_value in enumerate(np.linspace(0.0, 1.0, 1 + np.sum(nisos))):
-
         # Get coeffs at given fixed point
         coeffs = coeffs_interpolator(iso_value).reshape(2, lmax + 1, lmax + 1)
         mesh, grid = shtools.get_reconstruction_from_coeffs(coeffs, lrec=2 * lmax)
@@ -391,7 +384,6 @@ def cellular_mapping(
 
 
 def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: List):
-
     """
     This function probes the location of 3D mesh points in a list
     of 3D images.
@@ -430,7 +422,6 @@ def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: Lis
 def voxelize_mesh(
     imagedata: vtk.vtkImageData, shape: Tuple, mesh: vtk.vtkPolyData, origin: List
 ):
-
     """
     Voxelize a triangle mesh into an image.
 
@@ -473,7 +464,6 @@ def voxelize_mesh(
 
 
 def voxelize_meshes(meshes: List):
-
     """
     List of meshes to be voxelized into an image. Usually
     the input corresponds to the cell membrane and nuclear
@@ -542,7 +532,6 @@ def voxelize_meshes(meshes: List):
 def morph_representation_on_shape(
     img: np.array, param_img_coords: np.array, representation: np.array
 ):
-
     """
     Decodes the parameterized intensity representation
     into an image. To do so, an input image with the final

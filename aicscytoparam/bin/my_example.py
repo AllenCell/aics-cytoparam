@@ -24,7 +24,6 @@ logging.basicConfig(
 
 
 class Args(argparse.Namespace):
-
     DEFAULT_FIRST = 10
     DEFAULT_SECOND = 20
 

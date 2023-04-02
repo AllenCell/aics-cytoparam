@@ -82,7 +82,7 @@ setup(
     keywords="aicscytoparam",
     name="aicscytoparam",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     setup_requires=setup_requirements,
     test_suite="aicscytoparam/tests",
     tests_require=test_requirements,

@@ -209,7 +209,6 @@
 <div class="viewcode-block" id="parameterize_image_coordinates"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.parameterize_image_coordinates">[docs]</a><span class="k">def</span> <span class="nf">parameterize_image_coordinates</span><span class="p">(</span>
     <span class="n">seg_mem</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">seg_nuc</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the parameterization for a cell represented by its spherical</span>
 <span class="sd">    harmonics coefficients calculated by using ther package aics-shparam.</span>
@@ -282,7 +281,6 @@
     <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the parameterization for a cell represented by its spherical</span>
 <span class="sd">    harmonics coefficients calculated by using ther package aics-shparam.</span>
@@ -340,7 +338,6 @@
     <span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates 1D interpolators for SHE coefficients with fixed points</span>
 <span class="sd">    at: 1) nuclear centroid, 2) nuclear shell and 3) cell membrane.</span>
@@ -422,7 +419,6 @@
     <span class="n">centroid_nuc</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolate spherical harmonics coefficients representing the nuclear centroid,</span>
 <span class="sd">    the nuclear shell and the cell membrane. As the coefficients are interpolated,</span>
@@ -468,7 +464,6 @@
 
     <span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">z_coords</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">iso_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">nisos</span><span class="p">))):</span>
-
         <span class="c1"># Get coeffs at given fixed point</span>
         <span class="n">coeffs</span> <span class="o">=</span> <span class="n">coeffs_interpolator</span><span class="p">(</span><span class="n">iso_value</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">mesh</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">shtools</span><span class="o">.</span><span class="n">get_reconstruction_from_coeffs</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">lrec</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">lmax</span><span class="p">)</span>
@@ -495,7 +490,6 @@
     <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolate spherical harmonics coefficients representing the nuclear centroid,</span>
 <span class="sd">    the nuclear shell and the cell membrane. As the coefficients are interpolated,</span>
@@ -547,7 +541,6 @@
 
     <span class="n">representations</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">iso_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">nisos</span><span class="p">))):</span>
-
         <span class="c1"># Get coeffs at given fixed point</span>
         <span class="n">coeffs</span> <span class="o">=</span> <span class="n">coeffs_interpolator</span><span class="p">(</span><span class="n">iso_value</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">mesh</span><span class="p">,</span> <span class="n">grid</span> <span class="o">=</span> <span class="n">shtools</span><span class="o">.</span><span class="n">get_reconstruction_from_coeffs</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">lrec</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">lmax</span><span class="p">)</span>
@@ -589,7 +582,6 @@
 
 
 <div class="viewcode-block" id="get_intensity_representation"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">[docs]</a><span class="k">def</span> <span class="nf">get_intensity_representation</span><span class="p">(</span><span class="n">polydata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span> <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function probes the location of 3D mesh points in a list</span>
 <span class="sd">    of 3D images.</span>
@@ -628,7 +620,6 @@
 <div class="viewcode-block" id="voxelize_mesh"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.voxelize_mesh">[docs]</a><span class="k">def</span> <span class="nf">voxelize_mesh</span><span class="p">(</span>
     <span class="n">imagedata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkImageData</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span> <span class="n">origin</span><span class="p">:</span> <span class="n">List</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Voxelize a triangle mesh into an image.</span>
 
@@ -671,7 +662,6 @@
 
 
 <div class="viewcode-block" id="voxelize_meshes"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.voxelize_meshes">[docs]</a><span class="k">def</span> <span class="nf">voxelize_meshes</span><span class="p">(</span><span class="n">meshes</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    List of meshes to be voxelized into an image. Usually</span>
 <span class="sd">    the input corresponds to the cell membrane and nuclear</span>
@@ -740,7 +730,6 @@
 <div class="viewcode-block" id="morph_representation_on_shape"><a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.morph_representation_on_shape">[docs]</a><span class="k">def</span> <span class="nf">morph_representation_on_shape</span><span class="p">(</span>
     <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">param_img_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">representation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
 <span class="p">):</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decodes the parameterized intensity representation</span>
 <span class="sd">    into an image. To do so, an input image with the final</span>

@@ -65,7 +65,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: Free for non-commercial use",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
     description="Cytoplasm parameterization using spherical harmonics",

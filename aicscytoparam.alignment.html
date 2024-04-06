@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aicscytoparam.alignment package &mdash; aics-cytoparam 0.1.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=bafade30"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="aicscytoparam.bin package" href="aicscytoparam.bin.html" />
+    <link rel="prev" title="aicscytoparam package" href="aicscytoparam.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            aics-cytoparam
+          </a>
+              <div class="version">
+                0.1.10
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="aicscytoparam.html">aicscytoparam package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="aicscytoparam.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">aicscytoparam.alignment package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.bin.html">aicscytoparam.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#module-aicscytoparam.cytoparam">aicscytoparam.cytoparam module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.cellular_mapping"><code class="docutils literal notranslate"><span class="pre">cellular_mapping()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation"><code class="docutils literal notranslate"><span class="pre">get_intensity_representation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.get_interpolators"><code class="docutils literal notranslate"><span class="pre">get_interpolators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.get_mapping_coordinates"><code class="docutils literal notranslate"><span class="pre">get_mapping_coordinates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.morph_representation_on_shape"><code class="docutils literal notranslate"><span class="pre">morph_representation_on_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.parameterization_from_shcoeffs"><code class="docutils literal notranslate"><span class="pre">parameterization_from_shcoeffs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.parameterize_image_coordinates"><code class="docutils literal notranslate"><span class="pre">parameterize_image_coordinates()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#module-aicscytoparam.utils">aicscytoparam.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.utils.get_voxelized_image_of_mean_shape"><code class="docutils literal notranslate"><span class="pre">get_voxelized_image_of_mean_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.utils.load_image_and_align_based_on_shape_library"><code class="docutils literal notranslate"><span class="pre">load_image_and_align_based_on_shape_library()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#module-aicscytoparam">Module contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.get_module_version"><code class="docutils literal notranslate"><span class="pre">get_module_version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">aics-cytoparam</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">aicscytoparam</a></li>
+          <li class="breadcrumb-item"><a href="aicscytoparam.html">aicscytoparam package</a></li>
+      <li class="breadcrumb-item active">aicscytoparam.alignment package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/aicscytoparam.alignment.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="aicscytoparam.html" class="btn btn-neutral float-left" title="aicscytoparam package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="aicscytoparam.bin.html" class="btn btn-neutral float-right" title="aicscytoparam.bin package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aicscytoparam-alignment-package">
+<h1>aicscytoparam.alignment package<a class="headerlink" href="#aicscytoparam-alignment-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-aicscytoparam.alignment.generic_2d_shape">
+<span id="aicscytoparam-alignment-generic-2d-shape-module"></span><h2>aicscytoparam.alignment.generic_2d_shape module<a class="headerlink" href="#module-aicscytoparam.alignment.generic_2d_shape" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aicscytoparam.alignment.generic_2d_shape.</span></span><span class="sig-name descname"><span class="pre">ElongatedHexagonalShape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elongation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#ElongatedHexagonalShape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aicscytoparam.alignment.generic_2d_shape.Generic2DShape" title="aicscytoparam.alignment.generic_2d_shape.Generic2DShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic2DShape</span></code></a></p>
+<p>Elongated hexagonal shape</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape.get_default_parameters_as_dict">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_default_parameters_as_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elongation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_ini</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#ElongatedHexagonalShape.get_default_parameters_as_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape.get_default_parameters_as_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.Generic2DShape">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aicscytoparam.alignment.generic_2d_shape.</span></span><span class="sig-name descname"><span class="pre">Generic2DShape</span></span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#Generic2DShape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.Generic2DShape" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generic class for 2D shapes</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.Generic2DShape.find_angle_that_minimizes_countour_distance">
+<span class="sig-name descname"><span class="pre">find_angle_that_minimizes_countour_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#Generic2DShape.find_angle_that_minimizes_countour_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.find_angle_that_minimizes_countour_distance" title="Link to this definition"></a></dt>
+<dd><p>Find the angle that minimizes the distance between the
+shape and the contour (cx, cy)
+:Parameters: * <strong>cx</strong> (<em>np.ndarray</em>) – x coordinates of the contour</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>cy</strong> (<em>np.ndarray</em>) – y coordinates of the contour</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>angle</strong> (<em>int</em>) – angle that minimizes the distance</p></li>
+<li><p><strong>dist</strong> (<em>float</em>) – minimum distance</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.Generic2DShape.get_contour_from_3d_image">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_contour_from_3d_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#Generic2DShape.get_contour_from_3d_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.get_contour_from_3d_image" title="Link to this definition"></a></dt>
+<dd><p>Get the contour of a 3D image
+:Parameters: * <strong>image</strong> (<em>np.ndarray</em>) – 3D image</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>pad</strong> (<em>int</em>) – padding</p></li>
+<li><p><strong>center</strong> (<em>bool</em>) – center the contour</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>cx</strong> (<em>np.ndarray</em>) – x coordinates of the contour</p></li>
+<li><p><strong>cy</strong> (<em>np.ndarray</em>) – y coordinates of the contour</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.Generic2DShape.rotate_contour">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotate_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#Generic2DShape.rotate_contour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.rotate_contour" title="Link to this definition"></a></dt>
+<dd><p>Rotate a contour around the origin
+:Parameters: * <strong>cx</strong> (<em>np.ndarray</em>) – x coordinates of the contour</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>cy</strong> (<em>np.ndarray</em>) – y coordinates of the contour</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – angle of rotation</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>cxrot</strong> (<em>np.ndarray</em>) – x coordinates of the rotated contour</p></li>
+<li><p><strong>cyrot</strong> (<em>np.ndarray</em>) – y coordinates of the rotated contour</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.generic_2d_shape.Generic2DShape.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/generic_2d_shape.html#Generic2DShape.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.show" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-aicscytoparam.alignment.shape_library_2d">
+<span id="aicscytoparam-alignment-shape-library-2d-module"></span><h2>aicscytoparam.alignment.shape_library_2d module<a class="headerlink" href="#module-aicscytoparam.alignment.shape_library_2d" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">aicscytoparam.alignment.shape_library_2d.</span></span><span class="sig-name descname"><span class="pre">ShapeLibrary2D</span></span><a class="reference internal" href="_modules/aicscytoparam/alignment/shape_library_2d.html#ShapeLibrary2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define a library of 2D shapes</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[-150,</span> <span class="pre">150]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[-50,</span> <span class="pre">50]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours_to_match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/shape_library_2d.html#ShapeLibrary2D.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.display" title="Link to this definition"></a></dt>
+<dd><p>Display the shapes in the library
+:Parameters: * <strong>xlim</strong> (<em>list</em>) – x limits of the plot</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>ylim</strong> (<em>list</em>) – y limits of the plot</p></li>
+<li><p><strong>contours_to_match</strong> (<em>list of tuples</em>) – list of tuples with the contours to match</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.find_best_match">
+<span class="sig-name descname"><span class="pre">find_best_match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/shape_library_2d.html#ShapeLibrary2D.find_best_match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.find_best_match" title="Link to this definition"></a></dt>
+<dd><p>Find the best match between the contour (cx, cy) and the shapes in the library
+:Parameters: * <strong>cx</strong> (<em>np.ndarray</em>) – x coordinates of the contour</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>cy</strong> (<em>np.ndarray</em>) – y coordinates of the contour</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>idx</strong> (<em>int</em>) – index of the best match</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – parameters of the best match</p></li>
+<li><p><strong>angle</strong> (<em>float</em>) – angle that minimizes the distance</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_base_shape">
+<span class="sig-name descname"><span class="pre">set_base_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/shape_library_2d.html#ShapeLibrary2D.set_base_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_base_shape" title="Link to this definition"></a></dt>
+<dd><p>Set the base shape for the library
+:Parameters: <strong>polygon</strong> (<em>Generic2DShape</em>) – base shape for the library</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_parameters_range">
+<span class="sig-name descname"><span class="pre">set_parameters_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/alignment/shape_library_2d.html#ShapeLibrary2D.set_parameters_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_parameters_range" title="Link to this definition"></a></dt>
+<dd><p>Set the parameters range for the library
+:Parameters: <strong>params_dict</strong> (<em>dict</em>) – dictionary with the parameters range</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-aicscytoparam.alignment">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-aicscytoparam.alignment" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Matheus Viana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -55,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Package modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="aicscytoparam.html">aicscytoparam package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html">aicscytoparam.alignment package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aicscytoparam.bin.html">aicscytoparam.bin package</a></li>
 </ul>
 </li>
@@ -67,8 +68,11 @@
 <li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.morph_representation_on_shape"><code class="docutils literal notranslate"><span class="pre">morph_representation_on_shape()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.parameterization_from_shcoeffs"><code class="docutils literal notranslate"><span class="pre">parameterization_from_shcoeffs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.parameterize_image_coordinates"><code class="docutils literal notranslate"><span class="pre">parameterize_image_coordinates()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.voxelize_mesh"><code class="docutils literal notranslate"><span class="pre">voxelize_mesh()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.cytoparam.voxelize_meshes"><code class="docutils literal notranslate"><span class="pre">voxelize_meshes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#module-aicscytoparam.utils">aicscytoparam.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.utils.get_voxelized_image_of_mean_shape"><code class="docutils literal notranslate"><span class="pre">get_voxelized_image_of_mean_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.html#aicscytoparam.utils.load_image_and_align_based_on_shape_library"><code class="docutils literal notranslate"><span class="pre">load_image_and_align_based_on_shape_library()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="aicscytoparam.html#module-aicscytoparam">Module contents</a><ul>
@@ -115,10 +119,15 @@
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#V"><strong>V</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -132,19 +141,47 @@
 </li>
       </ul></li>
       <li>
+    aicscytoparam.alignment
+
+      <ul>
+        <li><a href="aicscytoparam.alignment.html#module-aicscytoparam.alignment">module</a>
+</li>
+      </ul></li>
+      <li>
+    aicscytoparam.alignment.generic_2d_shape
+
+      <ul>
+        <li><a href="aicscytoparam.alignment.html#module-aicscytoparam.alignment.generic_2d_shape">module</a>
+</li>
+      </ul></li>
+      <li>
+    aicscytoparam.alignment.shape_library_2d
+
+      <ul>
+        <li><a href="aicscytoparam.alignment.html#module-aicscytoparam.alignment.shape_library_2d">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
     aicscytoparam.bin
 
       <ul>
         <li><a href="aicscytoparam.bin.html#module-aicscytoparam.bin">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     aicscytoparam.cytoparam
 
       <ul>
         <li><a href="aicscytoparam.html#module-aicscytoparam.cytoparam">module</a>
+</li>
+      </ul></li>
+      <li>
+    aicscytoparam.utils
+
+      <ul>
+        <li><a href="aicscytoparam.html#module-aicscytoparam.utils">module</a>
 </li>
       </ul></li>
   </ul></td>
@@ -158,18 +195,62 @@
   </ul></td>
 </tr></table>
 
-<h2 id="G">G</h2>
+<h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">get_intensity_representation() (in module aicscytoparam.cytoparam)</a>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.display">display() (aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D method)</a>
 </li>
-      <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.get_interpolators">get_interpolators() (in module aicscytoparam.cytoparam)</a>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape">ElongatedHexagonalShape (class in aicscytoparam.alignment.generic_2d_shape)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.find_angle_that_minimizes_countour_distance">find_angle_that_minimizes_countour_distance() (aicscytoparam.alignment.generic_2d_shape.Generic2DShape method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.find_best_match">find_best_match() (aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape">Generic2DShape (class in aicscytoparam.alignment.generic_2d_shape)</a>
+</li>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.get_contour_from_3d_image">get_contour_from_3d_image() (aicscytoparam.alignment.generic_2d_shape.Generic2DShape static method)</a>
+</li>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape.get_default_parameters_as_dict">get_default_parameters_as_dict() (aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape static method)</a>
+</li>
+      <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">get_intensity_representation() (in module aicscytoparam.cytoparam)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.get_interpolators">get_interpolators() (in module aicscytoparam.cytoparam)</a>
+</li>
       <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.get_mapping_coordinates">get_mapping_coordinates() (in module aicscytoparam.cytoparam)</a>
 </li>
       <li><a href="aicscytoparam.html#aicscytoparam.get_module_version">get_module_version() (in module aicscytoparam)</a>
+</li>
+      <li><a href="aicscytoparam.html#aicscytoparam.utils.get_voxelized_image_of_mean_shape">get_voxelized_image_of_mean_shape() (in module aicscytoparam.utils)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.html#aicscytoparam.utils.load_image_and_align_based_on_shape_library">load_image_and_align_based_on_shape_library() (in module aicscytoparam.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -183,9 +264,17 @@
       <ul>
         <li><a href="aicscytoparam.html#module-aicscytoparam">aicscytoparam</a>
 </li>
+        <li><a href="aicscytoparam.alignment.html#module-aicscytoparam.alignment">aicscytoparam.alignment</a>
+</li>
+        <li><a href="aicscytoparam.alignment.html#module-aicscytoparam.alignment.generic_2d_shape">aicscytoparam.alignment.generic_2d_shape</a>
+</li>
+        <li><a href="aicscytoparam.alignment.html#module-aicscytoparam.alignment.shape_library_2d">aicscytoparam.alignment.shape_library_2d</a>
+</li>
         <li><a href="aicscytoparam.bin.html#module-aicscytoparam.bin">aicscytoparam.bin</a>
 </li>
         <li><a href="aicscytoparam.html#module-aicscytoparam.cytoparam">aicscytoparam.cytoparam</a>
+</li>
+        <li><a href="aicscytoparam.html#module-aicscytoparam.utils">aicscytoparam.utils</a>
 </li>
       </ul></li>
   </ul></td>
@@ -207,14 +296,26 @@
   </ul></td>
 </tr></table>
 
-<h2 id="V">V</h2>
+<h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.voxelize_mesh">voxelize_mesh() (in module aicscytoparam.cytoparam)</a>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.rotate_contour">rotate_contour() (aicscytoparam.alignment.generic_2d_shape.Generic2DShape static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_base_shape">set_base_shape() (aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D method)</a>
+</li>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_parameters_range">set_parameters_range() (aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="aicscytoparam.html#aicscytoparam.cytoparam.voxelize_meshes">voxelize_meshes() (in module aicscytoparam.cytoparam)</a>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D">ShapeLibrary2D (class in aicscytoparam.alignment.shape_library_2d)</a>
+</li>
+      <li><a href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.show">show() (aicscytoparam.alignment.generic_2d_shape.Generic2DShape method)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="aicscytoparam.bin package" href="aicscytoparam.bin.html" />
+    <link rel="next" title="aicscytoparam.alignment package" href="aicscytoparam.alignment.html" />
     <link rel="prev" title="aicscytoparam" href="modules.html" /> 
 </head>
 
@@ -58,6 +58,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">aicscytoparam package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html">aicscytoparam.alignment package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="aicscytoparam.bin.html">aicscytoparam.bin package</a></li>
 </ul>
 </li>
@@ -70,8 +71,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.cytoparam.morph_representation_on_shape"><code class="docutils literal notranslate"><span class="pre">morph_representation_on_shape()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.cytoparam.parameterization_from_shcoeffs"><code class="docutils literal notranslate"><span class="pre">parameterization_from_shcoeffs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.cytoparam.parameterize_image_coordinates"><code class="docutils literal notranslate"><span class="pre">parameterize_image_coordinates()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.cytoparam.voxelize_mesh"><code class="docutils literal notranslate"><span class="pre">voxelize_mesh()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.cytoparam.voxelize_meshes"><code class="docutils literal notranslate"><span class="pre">voxelize_meshes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-aicscytoparam.utils">aicscytoparam.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.utils.get_voxelized_image_of_mean_shape"><code class="docutils literal notranslate"><span class="pre">get_voxelized_image_of_mean_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aicscytoparam.utils.load_image_and_align_based_on_shape_library"><code class="docutils literal notranslate"><span class="pre">load_image_and_align_based_on_shape_library()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-aicscytoparam">Module contents</a><ul>
@@ -110,7 +114,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
         <a href="modules.html" class="btn btn-neutral float-left" title="aicscytoparam" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="aicscytoparam.bin.html" class="btn btn-neutral float-right" title="aicscytoparam.bin package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="aicscytoparam.alignment.html" class="btn btn-neutral float-right" title="aicscytoparam.alignment package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -123,6 +127,35 @@
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="aicscytoparam.alignment.html">aicscytoparam.alignment package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aicscytoparam.alignment.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aicscytoparam.alignment.html#module-aicscytoparam.alignment.generic_2d_shape">aicscytoparam.alignment.generic_2d_shape module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape"><code class="docutils literal notranslate"><span class="pre">ElongatedHexagonalShape</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.ElongatedHexagonalShape.get_default_parameters_as_dict"><code class="docutils literal notranslate"><span class="pre">ElongatedHexagonalShape.get_default_parameters_as_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape"><code class="docutils literal notranslate"><span class="pre">Generic2DShape</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.find_angle_that_minimizes_countour_distance"><code class="docutils literal notranslate"><span class="pre">Generic2DShape.find_angle_that_minimizes_countour_distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.get_contour_from_3d_image"><code class="docutils literal notranslate"><span class="pre">Generic2DShape.get_contour_from_3d_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.rotate_contour"><code class="docutils literal notranslate"><span class="pre">Generic2DShape.rotate_contour()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.generic_2d_shape.Generic2DShape.show"><code class="docutils literal notranslate"><span class="pre">Generic2DShape.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aicscytoparam.alignment.html#module-aicscytoparam.alignment.shape_library_2d">aicscytoparam.alignment.shape_library_2d module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D"><code class="docutils literal notranslate"><span class="pre">ShapeLibrary2D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.display"><code class="docutils literal notranslate"><span class="pre">ShapeLibrary2D.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.find_best_match"><code class="docutils literal notranslate"><span class="pre">ShapeLibrary2D.find_best_match()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_base_shape"><code class="docutils literal notranslate"><span class="pre">ShapeLibrary2D.set_base_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="aicscytoparam.alignment.html#aicscytoparam.alignment.shape_library_2d.ShapeLibrary2D.set_parameters_range"><code class="docutils literal notranslate"><span class="pre">ShapeLibrary2D.set_parameters_range()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aicscytoparam.alignment.html#module-aicscytoparam.alignment">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="aicscytoparam.bin.html">aicscytoparam.bin package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="aicscytoparam.bin.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aicscytoparam.bin.html#aicscytoparam-bin-my-example-module">aicscytoparam.bin.my_example module</a></li>
@@ -346,50 +379,48 @@ same parameters lmax and nisos.</p></li>
 </dl>
 </dd></dl>
 
+</section>
+<section id="module-aicscytoparam.utils">
+<span id="aicscytoparam-utils-module"></span><h2>aicscytoparam.utils module<a class="headerlink" href="#module-aicscytoparam.utils" title="Link to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="aicscytoparam.cytoparam.voxelize_mesh">
-<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">voxelize_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imagedata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkImageData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">vtkPolyData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_mesh" title="Link to this definition"></a></dt>
-<dd><p>Voxelize a triangle mesh into an image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>imagedata</strong> (<em>vtkImageData</em>) – Imagedata that will be uses as support for voxelization.</p></li>
-<li><p><strong>shape</strong> (<em>tuple</em>) – Shape that imagedata scalars will take after
-voxelization.</p></li>
-<li><p><strong>mesh</strong> (<em>vtkPolyData</em>) – Mesh to be voxelized</p></li>
-<li><p><strong>origin</strong> (<em>List</em>) – xyz specifying the lower left corner of the mesh.</p></li>
+<dt class="sig sig-object py" id="aicscytoparam.utils.get_voxelized_image_of_mean_shape">
+<span class="sig-prename descclassname"><span class="pre">aicscytoparam.utils.</span></span><span class="sig-name descname"><span class="pre">get_voxelized_image_of_mean_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeffs_mem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coeffs_nuc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_meshes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/utils.html#get_voxelized_image_of_mean_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.utils.get_voxelized_image_of_mean_shape" title="Link to this definition"></a></dt>
+<dd><p>Get the voxelized image of the mean shape
+:Parameters: * <strong>vec</strong> (<em>List</em>) – list of displacement vectors of nuclear centroid relative to cell centroid</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>coeffs_mem</strong> (<em>List</em>) – list of membrane coefficients</p></li>
+<li><p><strong>coeffs_nuc</strong> (<em>List</em>) – list of nuclear coefficients</p></li>
+<li><p><strong>return_meshes</strong> (<em>bool</em>) – return the meshes</p></li>
 </ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>avg_image</strong> – voxelized image of the mean shape</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>img</strong> – Binary array.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="aicscytoparam.cytoparam.voxelize_meshes">
-<span class="sig-prename descclassname"><span class="pre">aicscytoparam.cytoparam.</span></span><span class="sig-name descname"><span class="pre">voxelize_meshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/cytoparam.html#voxelize_meshes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.cytoparam.voxelize_meshes" title="Link to this definition"></a></dt>
-<dd><p>List of meshes to be voxelized into an image. Usually
-the input corresponds to the cell membrane and nuclear
-shell meshes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>meshes</strong> (<em>List</em>) – List of vtkPolydatas representing the meshes to
-be voxelized into an image.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>img</strong> (<em>np.array</em>) – 3D image where voxels with value i represent are
-those found in the interior of the i-th mesh in
-the input list. If a voxel is interior to one or
-more meshes form the input list, it will take the
-value of the right most mesh in the list.</p></li>
-<li><p><em>origin</em> – Origin of the meshes in the voxelized image.</p></li>
+<dt class="sig sig-object py" id="aicscytoparam.utils.load_image_and_align_based_on_shape_library">
+<span class="sig-prename descclassname"><span class="pre">aicscytoparam.utils.</span></span><span class="sig-name descname"><span class="pre">load_image_and_align_based_on_shape_library</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">library</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nuc_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aicscytoparam/utils.html#load_image_and_align_based_on_shape_library"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aicscytoparam.utils.load_image_and_align_based_on_shape_library" title="Link to this definition"></a></dt>
+<dd><p>Load an image and align it based on a shape library
+:Parameters: * <strong>path</strong> (<em>str</em>) – path to the image</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>library</strong> (<em>ShapeLibrary2D</em>) – shape library</p></li>
+<li><p><strong>nuc_channel</strong> (<em>int</em>) – channel of the nucleus</p></li>
 </ul>
-</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image_rot</strong> – aligned image</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>

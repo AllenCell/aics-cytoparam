@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   aicscytoparam.alignment
    aicscytoparam.bin
 
 Submodules
@@ -16,6 +17,14 @@ aicscytoparam.cytoparam module
 ------------------------------
 
 .. automodule:: aicscytoparam.cytoparam
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+aicscytoparam.utils module
+--------------------------
+
+.. automodule:: aicscytoparam.utils
    :members:
    :undoc-members:
    :show-inheritance:

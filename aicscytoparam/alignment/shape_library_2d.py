@@ -84,6 +84,6 @@ class ShapeLibrary2D:
             for cx, cy in contours_to_match:
                 pid, p, angle = self.find_best_match(cx, cy)
                 cxrot, cyrot = Generic2DShape.rotate_contour(cx, cy, angle)
-                axs[j, i].plot(cxrot, cyrot, color="magenta")
+                axs[pid // n, pid % n].plot(cxrot, cyrot, color="magenta")
         plt.tight_layout()
         plt.show()

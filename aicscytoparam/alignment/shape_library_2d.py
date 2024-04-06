@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
 from aicscytoparam.alignment.generic_2d_shape import Generic2DShape
+
 
 class ShapeLibrary2D():
     """
@@ -9,7 +9,7 @@ class ShapeLibrary2D():
     """
     def __init__(self):
         pass
-        
+
     def set_base_shape(self, polygon):
         """
         Set the base shape for the library
@@ -19,7 +19,7 @@ class ShapeLibrary2D():
             base shape for the library
         """
         self._polygon = polygon
-        
+
     def set_parameters_range(self, params_dict):
         """
         Set the parameters range for the library
@@ -57,7 +57,7 @@ class ShapeLibrary2D():
         idx = np.argmin(dists)
         return idx, self._params[idx], angles[idx]
 
-    def display(self, xlim=[-150, 150], ylim=[-50,50], contours_to_match=None):
+    def display(self, xlim=[-150, 150], ylim=[-50, 50], contours_to_match=None):
         """
         Display the shapes in the library
         Parameters
@@ -70,18 +70,19 @@ class ShapeLibrary2D():
             list of tuples with the contours to match
         """
         n = int(np.sqrt(len(self._params)))
-        fig, axs = plt.subplots(n, n, figsize=(3*n,1*n))
+        fig, axs = plt.subplots(n, n, figsize=(3 * n, 1 * n))
         for pid, p in enumerate(self._params):
+            j, i = pid // n, pid % n
             poly = self._polygon(**p)
-            axs[pid//n, pid%n].plot(poly.cx, poly.cy, lw=7, color="k", alpha=0.2)
-            axs[pid//n, pid%n].axis("off")
-            axs[pid//n, pid%n].set_aspect("equal")
-            axs[pid//n, pid%n].set_xlim(xlim[0], xlim[1])
-            axs[pid//n, pid%n].set_ylim(ylim[0], ylim[1])
+            axs[j, i].plot(poly.cx, poly.cy, lw=7, color="k", alpha=0.2)
+            axs[j, i].axis("off")
+            axs[j, i].set_aspect("equal")
+            axs[j, i].set_xlim(xlim[0], xlim[1])
+            axs[j, i].set_ylim(ylim[0], ylim[1])
         if contours_to_match is not None:
             for (cx, cy) in contours_to_match:
                 pid, p, angle = self.find_best_match(cx, cy)
                 cxrot, cyrot = Generic2DShape.rotate_contour(cx, cy, angle)
-                axs[pid//n, pid%n].plot(cxrot, cyrot, color="magenta")
+                axs[j, i].plot(cxrot, cyrot, color="magenta")
         plt.tight_layout()
         plt.show()

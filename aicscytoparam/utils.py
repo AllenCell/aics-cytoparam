@@ -37,6 +37,23 @@ def load_image_and_align_based_on_shape_library(path, library, nuc_channel=1):
 
 
 def get_voxelized_image_of_mean_shape(vec: List, coeffs_mem: List, coeffs_nuc: List, return_meshes=False):
+    """
+    Get the voxelized image of the mean shape
+    Parameters
+    ----------
+    vec: List
+        list of displacement vectors of nuclear centroid relative to cell centroid
+    coeffs_mem: List
+        list of membrane coefficients
+    coeffs_nuc: List
+        list of nuclear coefficients
+    return_meshes: bool
+        return the meshes
+    Returns
+    -------
+    avg_image: np.ndarray
+        voxelized image of the mean shape
+    """
     vec = np.array(vec).mean(axis=0)
     df_coeffs_mem = pd.DataFrame(coeffs_mem)
     df_coeffs_nuc = pd.DataFrame(coeffs_nuc)

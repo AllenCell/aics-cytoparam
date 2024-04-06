@@ -2,9 +2,9 @@ import vtk
 import warnings
 import numpy as np
 from aicsimageio import AICSImage
+from typing import Optional, List, Dict
 from aicsshparam import shparam, shtools
 from scipy import interpolate as spinterp
-from typing import Optional, List, Dict, Tuple
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 
@@ -417,6 +417,7 @@ def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: Lis
         z_clip = np.clip(z, 0, img.shape[0] - 1)
         representation[name] = img[z_clip, y_clip, x_clip]
     return representation
+
 
 def morph_representation_on_shape(
     img: np.array, param_img_coords: np.array, representation: np.array

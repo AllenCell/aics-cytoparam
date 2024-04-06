@@ -6,6 +6,7 @@ from aicsshparam import shtools
 from vtk.util import numpy_support as vtknp
 from aicscytoparam.alignment.generic_2d_shape import Generic2DShape
 
+
 def load_image_and_align_based_on_shape_library(path, library, nuc_channel=1):
     """
     Load an image and align it based on a shape library
@@ -24,19 +25,20 @@ def load_image_and_align_based_on_shape_library(path, library, nuc_channel=1):
     """
     image = skio.imread(path)
     (cx, cy) = Generic2DShape.get_contour_from_3d_image(image[0])
-    _,  _, angle = library.find_best_match(cx, cy)
+    _, _, angle = library.find_best_match(cx, cy)
     image_rot = shtools.rotate_image_2d(image, -angle)
     # Apply extra 180 degrees rotation if nucleus is at the right
     # side of the aligned cell
     x = np.arange(image_rot.shape[-1])
-    px = image_rot[nuc_channel].sum(axis=(0,1))
-    xpx = (x-x.mean())*px/px.sum()
+    px = image_rot[nuc_channel].sum(axis=(0, 1))
+    xpx = (x - x.mean()) * px / px.sum()
     if xpx.sum() > 0:
         image_rot = shtools.rotate_image_2d(image_rot, 180)
     return image_rot  
 
 
-def get_voxelized_image_of_mean_shape(vec: List, coeffs_mem: List, coeffs_nuc: List, return_meshes=False):
+def get_voxelized_image_of_mean_shape(
+        vec: List, coeffs_mem: List, coeffs_nuc: List, return_meshes=False):
     """
     Get the voxelized image of the mean shape
     Parameters
@@ -66,7 +68,8 @@ def get_voxelized_image_of_mean_shape(vec: List, coeffs_mem: List, coeffs_nuc: L
     # Translate nucleus to correct location based on average displacement of nuclear
     # centroid relative to cell centroid
     pts = vtknp.vtk_to_numpy(avg_mesh_nuc.GetPoints().GetData())
-    shtools.update_mesh_points(avg_mesh_nuc, pts[:,0]-vec[0], pts[:,1]-vec[1], pts[:,2]-vec[2])
+    shtools.update_mesh_points(
+        avg_mesh_nuc, pts[:, 0] - vec[0], pts[:, 1] - vec[1], pts[:, 2] - vec[2])
     # Convert average cell shape into an image
     avg_image, _ = shtools.voxelize_meshes([avg_mesh_mem, avg_mesh_nuc])
     if return_meshes:

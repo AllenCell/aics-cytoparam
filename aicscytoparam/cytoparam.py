@@ -2,9 +2,9 @@ import vtk
 import warnings
 import numpy as np
 from aicsimageio import AICSImage
+from typing import Optional, List, Dict
 from aicsshparam import shparam, shtools
 from scipy import interpolate as spinterp
-from typing import Optional, List, Dict, Tuple
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 
@@ -417,116 +417,6 @@ def get_intensity_representation(polydata: vtk.vtkPolyData, images_to_probe: Lis
         z_clip = np.clip(z, 0, img.shape[0] - 1)
         representation[name] = img[z_clip, y_clip, x_clip]
     return representation
-
-
-def voxelize_mesh(
-    imagedata: vtk.vtkImageData, shape: Tuple, mesh: vtk.vtkPolyData, origin: List
-):
-    """
-    Voxelize a triangle mesh into an image.
-
-    Parameters
-    --------------------
-    imagedata: vtkImageData
-        Imagedata that will be uses as support for voxelization.
-    shape: tuple
-        Shape that imagedata scalars will take after
-        voxelization.
-    mesh: vtkPolyData
-        Mesh to be voxelized
-    origin: List
-        xyz specifying the lower left corner of the mesh.
-
-    Returns
-    -------
-    img: np.array
-        Binary array.
-    """
-
-    pol2stenc = vtk.vtkPolyDataToImageStencil()
-    pol2stenc.SetInputData(mesh)
-    pol2stenc.SetOutputOrigin(origin)
-    pol2stenc.SetOutputWholeExtent(imagedata.GetExtent())
-    pol2stenc.Update()
-
-    imgstenc = vtk.vtkImageStencil()
-    imgstenc.SetInputData(imagedata)
-    imgstenc.SetStencilConnection(pol2stenc.GetOutputPort())
-    imgstenc.ReverseStencilOff()
-    imgstenc.SetBackgroundValue(0)
-    imgstenc.Update()
-
-    # Convert scalars from vtkImageData back to numpy
-    scalars = imgstenc.GetOutput().GetPointData().GetScalars()
-    img = vtk_to_numpy(scalars).reshape(shape)
-
-    return img
-
-
-def voxelize_meshes(meshes: List):
-    """
-    List of meshes to be voxelized into an image. Usually
-    the input corresponds to the cell membrane and nuclear
-    shell meshes.
-
-    Parameters
-    --------------------
-    meshes: List
-        List of vtkPolydatas representing the meshes to
-        be voxelized into an image.
-    Returns
-    -------
-    img: np.array
-        3D image where voxels with value i represent are
-        those found in the interior of the i-th mesh in
-        the input list. If a voxel is interior to one or
-        more meshes form the input list, it will take the
-        value of the right most mesh in the list.
-    origin:
-        Origin of the meshes in the voxelized image.
-    """
-
-    # 1st mesh is used as reference (cell) and it should be
-    # the larger than the 2nd one (nucleus).
-    mesh = meshes[0]
-
-    # Find mesh coordinates
-    coords = vtk_to_numpy(mesh.GetPoints().GetData())
-
-    # Find bounds of the mesh
-    rmin = (coords.min(axis=0) - 0.5).astype(int)
-    rmax = (coords.max(axis=0) + 0.5).astype(int)
-
-    # Width, height and depth
-    w = int(2 + (rmax[0] - rmin[0]))
-    h = int(2 + (rmax[1] - rmin[1]))
-    d = int(2 + (rmax[2] - rmin[2]))
-
-    # Create image data
-    imagedata = vtk.vtkImageData()
-    imagedata.SetDimensions([w, h, d])
-    imagedata.SetExtent(0, w - 1, 0, h - 1, 0, d - 1)
-    imagedata.SetOrigin(rmin)
-    imagedata.AllocateScalars(vtk.VTK_UNSIGNED_CHAR, 1)
-
-    # Set all values to 1
-    imagedata.GetPointData().GetScalars().FillComponent(0, 1)
-
-    # Create an empty 3D numpy array to sum up
-    # voxelization of all meshes
-    img = np.zeros((d, h, w), dtype=np.uint8)
-
-    # Voxelize one mesh at the time
-    for mid, mesh in enumerate(meshes):
-        seg = voxelize_mesh(
-            imagedata=imagedata, shape=(d, h, w), mesh=mesh, origin=rmin
-        )
-        img[seg > 0] = mid + 1
-
-    # Origin of the reference system in the image
-    origin = rmin.reshape(1, 3)
-
-    return img, origin
 
 
 def morph_representation_on_shape(

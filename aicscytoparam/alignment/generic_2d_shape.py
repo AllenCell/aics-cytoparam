@@ -5,10 +5,11 @@ from skimage import transform as sktrans
 from skimage import measure as skmeasure
 
 
-class Generic2DShape():
+class Generic2DShape:
     """
     Generic class for 2D shapes
     """
+
     def __init__():
         pass
 
@@ -112,8 +113,9 @@ class Generic2DShape():
 
 class ElongatedHexagonalShape(Generic2DShape):
     """
-    Elongated hexagonal shape    
+    Elongated hexagonal shape
     """
+
     def __init__(self, base, elongation, pad=5):
         self._pad = pad
         self._base = base

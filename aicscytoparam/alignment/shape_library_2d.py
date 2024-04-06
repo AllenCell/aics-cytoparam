@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 from aicscytoparam.alignment.generic_2d_shape import Generic2DShape
 
 
-class ShapeLibrary2D():
+class ShapeLibrary2D:
     """
     Define a library of 2D shapes
     """
+
     def __init__(self):
         pass
 
@@ -80,7 +81,7 @@ class ShapeLibrary2D():
             axs[j, i].set_xlim(xlim[0], xlim[1])
             axs[j, i].set_ylim(ylim[0], ylim[1])
         if contours_to_match is not None:
-            for (cx, cy) in contours_to_match:
+            for cx, cy in contours_to_match:
                 pid, p, angle = self.find_best_match(cx, cy)
                 cxrot, cyrot = Generic2DShape.rotate_contour(cx, cy, angle)
                 axs[j, i].plot(cxrot, cyrot, color="magenta")

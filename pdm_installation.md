@@ -7,3 +7,4 @@
 ```
 pdm run python src/aicscytoparam/tests/dummy_test.py
 ```
+The current lock file includes all dependencies. If you only need the runtime dependencies, you can delete the existing lock file and create a new one by running `pdm lock`.

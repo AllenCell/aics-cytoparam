@@ -51,7 +51,7 @@ build: ## run tox / run tests and lint
 gen-docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/aicscytoparam*.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ aicscytoparam **/tests/
+	sphinx-apidoc -o docs/ src/aicscytoparam **/tests/
 	$(MAKE) -C docs html
 
 docs: ## generate Sphinx HTML documentation, including API docs, and serve to browser

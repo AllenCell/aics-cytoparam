@@ -51,13 +51,24 @@ Ready to contribute? Here's how to set up `aicscytoparam` for local development.
 ## Deploying
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed.
-Then run:
 
-```bash
-bump-my-version patch # possible: major / minor / patch
-git push
-git push --tags
-```
+1. **Ensure all changes are committed.**  
+   Refer to [bump-my-version on PyPI](https://pypi.org/project/bump-my-version/0.9.1/) for more details on versioning.
 
-This will release a new package version on Git + GitHub and publish to PyPI.
+2. **Bump the version number.**  
+   Run one of the following commands depending on the type of version update:
+   ```bash
+   bump-my-version major # for major releases with breaking changes
+   bump-my-version minor # for minor releases with new features
+   bump-my-version patch # for patch releases with bug fixes
+   ```
+
+3. **Push the changes and tags to the repository.**
+   ```bash
+   git push
+   git push --tags
+   ```
+
+---
+
+This will release a new package version on Git and GitHub. When your commit message includes "Bump version," it triggers a GitHub Action that automatically publishes the package to PyPI!

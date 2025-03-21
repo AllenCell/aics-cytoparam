@@ -1,0 +1,119 @@
+[project]
+name = "aicscytoparam"
+version = "0.1.12"
+description = "Cytoplasm parameterization using spherical harmonics"
+authors = [
+    {name = "Matheus Viana", email = "matheus.viana@alleninstitute.org"},
+]
+dependencies = [
+    "setuptools",
+    "aicsimageio",
+    "aicsshparam",
+    "pyshtools>=4.13.1",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "Allen Institute Software License"}
+keywords = ["aicscytoparam"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: Free for non-commercial use",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.urls]
+Homepage = "https://github.com/AllenCell/aics-cytoparam"
+
+[project.optional-dependencies]
+setup = [
+    "pytest-runner",
+    "wheel",
+]
+test = [
+    "black",
+    "flake8",
+    "flake8-debugger",
+    "pytest",
+    "pytest-cov",
+    "pytest-raises",
+]
+dev = [
+    "Sphinx",
+    "black",
+    "bump-my-version",
+    "coverage",
+    "flake8",
+    "flake8-debugger",
+    "ipython",
+    "m2r2",
+    "pytest",
+    "pytest-cov",
+    "pytest-raises",
+    "pytest-runner",
+    "pytest-runner",
+    "sphinx_rtd_theme",
+    "tox",
+    "twine",
+    "wheel",
+    "wheel",
+]
+all = [
+    "Sphinx",
+    "aicsimageio",
+    "aicsshparam",
+    "black",
+    "bump-my-version",
+    "coverage",
+    "flake8",
+    "flake8-debugger",
+    "ipython",
+    "m2r2",
+    "pytest",
+    "pytest-cov",
+    "pytest-raises",
+    "pytest-runner",
+    "pytest-runner",
+    "sphinx_rtd_theme",
+    "tox",
+    "twine",
+    "wheel",
+    "wheel",
+]
+
+[project.scripts]
+my_example = "aicscytoparam.bin.my_example:main"
+[build-system]
+requires = ["pdm-backend", "meson-python", "ninja"]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.bumpversion]
+commit = true
+tag = true
+current_version = "0.1.12"
+message = "Bump version: {current_version} → {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "src/aicscytoparam/init.py"
+search = '{current_version}'
+replace = '{new_version}'
+
+[tool.flake8]
+exclude = ["docs/"]
+ignore = ["E203", "E402", "W291", "W503"]
+max-line-length = 88
+
+[tool.setuptools.bdist_wheel]
+universal = true
+
+[tool.setuptools.aliases]
+test = "pytest"

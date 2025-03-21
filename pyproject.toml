@@ -103,7 +103,7 @@ search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
 
 [[tool.bumpversion.files]]
-filename = "src/aicscytoparam/init.py"
+filename = "src/aicscytoparam/__init__.py"
 search = '{current_version}'
 replace = '{new_version}'
 

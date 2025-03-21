@@ -22,7 +22,7 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest aicscytoparam/tests/
+        pytest src/aicscytoparam/tests/
     - name: Upload codecov
       uses: codecov/codecov-action@v3
 
@@ -41,7 +41,7 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 aicscytoparam --count --verbose --show-source --statistics
+        flake8p src/aicscytoparam --count --verbose --show-source --statistics
     - name: Check with black
       run: |
-        black --check aicscytoparam
+        black --check src/aicscytoparam

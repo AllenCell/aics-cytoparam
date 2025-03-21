@@ -5,7 +5,7 @@
 groups = ["default", "all"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:7fd387ccbb3178afc80872a33f2023cc29bfe718b2727d1b7934d579dd2d0018"
+content_hash = "sha256:2ff8d915196511b57cd52ea48c077bc006d0af489d92ef499f03a6470b68c8de"
 
 [[metadata.targets]]
 requires_python = ">=3.9"
@@ -1145,6 +1145,21 @@ dependencies = [
 files = [
     {file = "flake8-debugger-4.1.2.tar.gz", hash = "sha256:52b002560941e36d9bf806fca2523dc7fb8560a295d5f1a6e15ac2ded7a73840"},
     {file = "flake8_debugger-4.1.2-py3-none-any.whl", hash = "sha256:0a5e55aeddcc81da631ad9c8c366e7318998f83ff00985a49e6b3ecf61e571bf"},
+]
+
+[[package]]
+name = "flake8-pyproject"
+version = "1.2.3"
+requires_python = ">= 3.6"
+summary = "Flake8 plug-in loading the configuration from pyproject.toml"
+groups = ["all"]
+dependencies = [
+    "Flake8>=5",
+    "TOMLi; python_version < \"3.11\"",
+    "TOMLi<2; python_version < \"3.7\"",
+]
+files = [
+    {file = "flake8_pyproject-1.2.3-py3-none-any.whl", hash = "sha256:6249fe53545205af5e76837644dc80b4c10037e73a0e5db87ff562d75fb5bd4a"},
 ]
 
 [[package]]

@@ -34,6 +34,7 @@ setup = [
 test = [
     "black",
     "flake8",
+    "Flake8-pyproject",
     "flake8-debugger",
     "pytest",
     "pytest-cov",
@@ -45,6 +46,7 @@ dev = [
     "bump-my-version",
     "coverage",
     "flake8",
+    "Flake8-pyproject",
     "flake8-debugger",
     "ipython",
     "m2r2",
@@ -67,6 +69,7 @@ all = [
     "bump-my-version",
     "coverage",
     "flake8",
+    "Flake8-pyproject",
     "flake8-debugger",
     "ipython",
     "m2r2",

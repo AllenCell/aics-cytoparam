@@ -2,9 +2,9 @@ include CONTRIBUTING.md
 include LICENSE
 include README.md
 
-recursive-include tests *
+recursive-include src/aicscytoparam/tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
-graft aicscytoparam/data
+graft src/aicscytoparam/data

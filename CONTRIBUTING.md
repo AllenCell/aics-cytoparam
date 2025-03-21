@@ -12,13 +12,13 @@ Ready to contribute? Here's how to set up `aicscytoparam` for local development.
 2. Clone your fork locally:
 
     ```bash
-    git clone git@github.com:{your_name_here}/aicscytoparam.git
+    git clone git@github.com:{your_name_here}/aics-cytoparam.git
     ```
 
 3. Install the project in editable mode. (It is also recommended to work in a virtualenv or anaconda environment):
 
     ```bash
-    cd aicscytoparam/
+    cd src/aicscytoparam/
     pip install -e .[dev]
     ```
 
@@ -55,7 +55,7 @@ Make sure all your changes are committed.
 Then run:
 
 ```bash
-bump2version patch # possible: major / minor / patch
+bump-my-version patch # possible: major / minor / patch
 git push
 git push --tags
 ```

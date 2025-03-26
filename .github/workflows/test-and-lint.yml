@@ -7,13 +7,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
@@ -22,26 +22,26 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest aicscytoparam/tests/
+        pytest src/aicscytoparam/tests/
     - name: Upload codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
 
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: 3.11
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 aicscytoparam --count --verbose --show-source --statistics
+        flake8p src/aicscytoparam --count --verbose --show-source --statistics
     - name: Check with black
       run: |
-        black --check aicscytoparam
+        black --check src/aicscytoparam

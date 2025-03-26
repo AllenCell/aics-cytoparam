@@ -14,6 +14,8 @@
 **Stable Release:** `pip install aicscytoparam`<br>
 **Development Head:** `pip install git+https://github.com/AllenCell/aics-cytoparam.git`
 
+For `pdm` users, follow [these installation steps instead](./pdm_installation.md).
+
 ## How to use
 
 Here we outline an example of how to use `aicscytoparam` to create a parameterization of a 3D cell. In this case, the 3D cells will be represented by a cell segementation, nuclear segmentation and a fluorescent protein (FP) image representing the fluorescent signal of a tagged protein.

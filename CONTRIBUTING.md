@@ -12,13 +12,13 @@ Ready to contribute? Here's how to set up `aicscytoparam` for local development.
 2. Clone your fork locally:
 
     ```bash
-    git clone git@github.com:{your_name_here}/aicscytoparam.git
+    git clone git@github.com:{your_name_here}/aics-cytoparam.git
     ```
 
 3. Install the project in editable mode. (It is also recommended to work in a virtualenv or anaconda environment):
 
     ```bash
-    cd aicscytoparam/
+    cd src/aicscytoparam/
     pip install -e .[dev]
     ```
 
@@ -51,13 +51,24 @@ Ready to contribute? Here's how to set up `aicscytoparam` for local development.
 ## Deploying
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed.
-Then run:
 
-```bash
-bump2version patch # possible: major / minor / patch
-git push
-git push --tags
-```
+1. **Ensure all changes are committed.**  
+   Refer to [bump-my-version on PyPI](https://pypi.org/project/bump-my-version/0.9.1/) for more details on versioning.
 
-This will release a new package version on Git + GitHub and publish to PyPI.
+2. **Bump the version number.**  
+   Run one of the following commands depending on the type of version update:
+   ```bash
+   bump-my-version bump major # for major releases with breaking changes
+   bump-my-version bump minor # for minor releases with new features
+   bump-my-version bump patch # for patch releases with bug fixes
+   ```
+
+3. **Push the changes and tags to the repository.**
+   ```bash
+   git push
+   git push --tags
+   ```
+
+---
+
+This will release a new package version on Git and GitHub. When your commit message includes "Bump version," it triggers a GitHub Action that automatically publishes the package to PyPI!

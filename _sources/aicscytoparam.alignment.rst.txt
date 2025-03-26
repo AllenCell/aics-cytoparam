@@ -9,21 +9,21 @@ aicscytoparam.alignment.generic\_2d\_shape module
 
 .. automodule:: aicscytoparam.alignment.generic_2d_shape
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 aicscytoparam.alignment.shape\_library\_2d module
 -------------------------------------------------
 
 .. automodule:: aicscytoparam.alignment.shape_library_2d
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: aicscytoparam.alignment
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aicscytoparam.cytoparam &mdash; aics-cytoparam 0.1.12 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+  <title>aicscytoparam.cytoparam &mdash; aics-cytoparam 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=297ad043"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -33,9 +31,6 @@
           <a href="../../index.html" class="icon icon-home">
             aics-cytoparam
           </a>
-              <div class="version">
-                0.1.12
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -83,11 +78,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#get-started">Get Started!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#deploying">Deploying</a></li>
-</ul>
-</li>
 </ul>
 
         </div>
@@ -116,19 +106,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for aicscytoparam.cytoparam</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">vtk</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">aicsimageio</span> <span class="kn">import</span> <span class="n">AICSImage</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
-<span class="kn">from</span> <span class="nn">aicsshparam</span> <span class="kn">import</span> <span class="n">shparam</span><span class="p">,</span> <span class="n">shtools</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span> <span class="k">as</span> <span class="n">spinterp</span>
-<span class="kn">from</span> <span class="nn">vtk.util.numpy_support</span> <span class="kn">import</span> <span class="n">vtk_to_numpy</span><span class="p">,</span> <span class="n">numpy_to_vtk</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">vtk</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aicsimageio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AICSImage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aicsshparam</span><span class="w"> </span><span class="kn">import</span> <span class="n">shparam</span><span class="p">,</span> <span class="n">shtools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">interpolate</span> <span class="k">as</span> <span class="n">spinterp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">vtk.util.numpy_support</span><span class="w"> </span><span class="kn">import</span> <span class="n">vtk_to_numpy</span><span class="p">,</span> <span class="n">numpy_to_vtk</span>
 
 
 <div class="viewcode-block" id="parameterize_image_coordinates">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.parameterize_image_coordinates">[docs]</a>
-<span class="k">def</span> <span class="nf">parameterize_image_coordinates</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parameterize_image_coordinates</span><span class="p">(</span>
     <span class="n">seg_mem</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">seg_nuc</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nisos</span><span class="p">:</span> <span class="n">List</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -198,7 +188,7 @@
 
 <div class="viewcode-block" id="parameterization_from_shcoeffs">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.parameterization_from_shcoeffs">[docs]</a>
-<span class="k">def</span> <span class="nf">parameterization_from_shcoeffs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parameterization_from_shcoeffs</span><span class="p">(</span>
     <span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -259,7 +249,7 @@
 
 <div class="viewcode-block" id="get_interpolators">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_interpolators">[docs]</a>
-<span class="k">def</span> <span class="nf">get_interpolators</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_interpolators</span><span class="p">(</span>
     <span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -343,7 +333,7 @@
 
 <div class="viewcode-block" id="get_mapping_coordinates">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_mapping_coordinates">[docs]</a>
-<span class="k">def</span> <span class="nf">get_mapping_coordinates</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_mapping_coordinates</span><span class="p">(</span>
     <span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -416,7 +406,7 @@
 
 <div class="viewcode-block" id="cellular_mapping">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.cellular_mapping">[docs]</a>
-<span class="k">def</span> <span class="nf">cellular_mapping</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cellular_mapping</span><span class="p">(</span>
     <span class="n">coeffs_mem</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">centroid_mem</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
     <span class="n">coeffs_nuc</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -518,7 +508,7 @@
 
 <div class="viewcode-block" id="get_intensity_representation">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.get_intensity_representation">[docs]</a>
-<span class="k">def</span> <span class="nf">get_intensity_representation</span><span class="p">(</span><span class="n">polydata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span> <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_intensity_representation</span><span class="p">(</span><span class="n">polydata</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">,</span> <span class="n">images_to_probe</span><span class="p">:</span> <span class="n">List</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function probes the location of 3D mesh points in a list</span>
 <span class="sd">    of 3D images.</span>
@@ -557,7 +547,7 @@
 
 <div class="viewcode-block" id="morph_representation_on_shape">
 <a class="viewcode-back" href="../../aicscytoparam.html#aicscytoparam.cytoparam.morph_representation_on_shape">[docs]</a>
-<span class="k">def</span> <span class="nf">morph_representation_on_shape</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">morph_representation_on_shape</span><span class="p">(</span>
     <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">param_img_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">representation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

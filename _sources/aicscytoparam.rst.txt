@@ -18,21 +18,21 @@ aicscytoparam.cytoparam module
 
 .. automodule:: aicscytoparam.cytoparam
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 aicscytoparam.utils module
 --------------------------
 
 .. automodule:: aicscytoparam.utils
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: aicscytoparam
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

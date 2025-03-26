@@ -1,7 +1,7 @@
 # Installation and Usage with PDM
 
 1. [Install PDM](https://pdm-project.org/en/latest/#recommended-installation-method).  
-   (Make sure that `pdm-backend` is installed prior to synchronizing dependencies.)
+   (Make sure that `pdm-backend` is installed before synchronizing dependencies)
 
 2. Install project dependencies by running:  
    `pdm sync --no-isolation`

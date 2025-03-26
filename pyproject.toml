@@ -88,7 +88,7 @@ all = [
 [project.scripts]
 my_example = "aicscytoparam.bin.my_example:main"
 [build-system]
-requires = ["pdm-backend", "meson-python", "ninja"]
+requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm]

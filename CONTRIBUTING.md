@@ -58,9 +58,9 @@ A reminder for the maintainers on how to deploy.
 2. **Bump the version number.**  
    Run one of the following commands depending on the type of version update:
    ```bash
-   bump-my-version major # for major releases with breaking changes
-   bump-my-version minor # for minor releases with new features
-   bump-my-version patch # for patch releases with bug fixes
+   bump-my-version bump major # for major releases with breaking changes
+   bump-my-version bump minor # for minor releases with new features
+   bump-my-version bump patch # for patch releases with bug fixes
    ```
 
 3. **Push the changes and tags to the repository.**

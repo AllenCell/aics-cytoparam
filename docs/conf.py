@@ -41,7 +41,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.mathjax",
-    "m2r2",
+    "myst_parser",
 ]
 
 # Control napoleon
@@ -92,7 +92,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", src/aicscytoparam/bin/*]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
